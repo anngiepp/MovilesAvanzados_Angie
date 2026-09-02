@@ -1,3 +1,10 @@
-import UIKit
+import Foundation
 
-var greeting = "Hello, playground"
+var alumnos: [String] = []
+for i in 1...5 {
+    print("Nombre del alumno \(i):")
+    let nombre = readLine() ?? ""
+    alumnos.append(nombre)
+}
+print("Alumnos: \(alumnos)")
+
