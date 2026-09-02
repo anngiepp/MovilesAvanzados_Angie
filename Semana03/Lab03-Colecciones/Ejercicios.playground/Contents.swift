@@ -57,3 +57,14 @@ print("Nota más baja: \(notasClase.min()!)")
 print("Notas ordenadas: \(notasClase.sorted())")
 print("Aprobados: \(aprobados)")
 print("Desaprobados: \(desaprobados)")
+
+
+// FIX
+var frutas = ["Manzana", "Plátano", "Naranja"]
+frutas.append("7")   // FIX 1: el arreglo deberia llamar a un String
+
+var colores = ["Rojo", "Azul", "Verde"]
+colores.append("Amarillo")   // FIX 2: let es una constante inmutable
+
+let numeros = [10, 20, 30, 40, 50]
+print(numeros[4])   // FIX 3: Al tener 5 elementos solo tiene 4 indices empezando desde el 0 al 4
