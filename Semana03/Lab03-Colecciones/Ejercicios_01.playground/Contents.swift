@@ -68,3 +68,14 @@ colores.append("Amarillo")   // FIX 2: let es una constante inmutable
 
 let numeros = [10, 20, 30, 40, 50]
 print(numeros[4])   // FIX 3: Al tener 5 elementos solo tiene 4 indices empezando desde el 0 al 4
+
+//PREDICT
+var lista = [1, 2, 3, 4, 5]
+lista.remove(at: 0)
+lista.append(6)
+print(lista)         // PREDICT 1: [2, 3, 4, 5, 6]
+print(lista.count)   // PREDICT 2: 5
+
+var nombres = ["Ana", "Carlos", "Beto"]
+print(nombres.sorted()) // PREDICT 3: ["Ana", "Beto", "Carlos"]
+print(nombres) // PREDICT 4: ["Ana", "Carlos", "Beto"]
