@@ -1,15 +1,18 @@
 import Foundation
 
+
 enum EstadoEstacion {
     case operativa
     case construccion
     case proyecto
 }
 
+
 enum TipoEstacion {
     case normal
     case intercambio
 }
+
 
 struct Estacion {
     
@@ -34,8 +37,8 @@ struct Estacion {
     let destinoFinal: String
     
     let observacion: String
-    
 }
+
 
 struct Linea {
     
@@ -46,27 +49,4 @@ struct Linea {
     let estaciones: [String]
     
     let descripcion: String
-    
 }
-
-let prueba = Estacion(
-    id: "L1-016",
-    nombre: "Grau",
-    linea: "Línea 1",
-    colorLinea: "Verde",
-    estado: .operativa,
-    tipo: .intercambio,
-    distrito: "Cercado de Lima",
-    estacionAnterior: "Gamarra",
-    estacionSiguiente: "El Ángel",
-    conexiones: ["Línea 2"],
-    lugaresCercanos: [
-        "Parque Universitario",
-        "Mercado Central"
-    ],
-    destinoInicio: "Villa El Salvador",
-    destinoFinal: "Bayóvar",
-    observacion: "Estación de conexión"
-)
-
-print(prueba.nombre)
