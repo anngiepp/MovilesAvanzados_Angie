@@ -96,3 +96,28 @@ print("===== Licuadora (S/ 250.0) =====")
 for sucursal in sucursales {
     sucursal.cotizar(item: licuadora)
 }
+
+// ===== FIX: Este código tiene 2 errores =====
+
+class SucursalMall: Sucursal {
+    // FIX 7: Se agregó la palabra clave 'override'.
+    // Swift la exige para confirmar explícitamente que la subclase está sobreescribiendo un método de la superclase.
+    override func descuento() -> Double {
+        return 0.12
+    }
+}
+
+class SucursalExpress: Sucursal {
+    let radioKm: Int
+    
+    init(nombre: String, ciudad: String, radioKm: Int) {
+        self.radioKm = radioKm
+        // FIX 8: Se agregó 'super.init(...)'.
+        // Swift exige llamar al inicializador de la superclase para inicializar sus propiedades (nombre y ciudad).
+        super.init(nombre: nombre, ciudad: ciudad)
+    }
+}
+
+// Ejemplo ejecutable de comprobación para la consola:
+let express = SucursalExpress(nombre: "Express Surco", ciudad: "Lima", radioKm: 5)
+print("Fixes verificados -> Sucursal: \(express.nombre), Radio: \(express.radioKm)km")
