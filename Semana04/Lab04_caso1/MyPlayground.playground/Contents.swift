@@ -1,3 +1,98 @@
-import UIKit
+// ===== CASO 1.5: HERENCIA Y POLIMORFISMO — LA CADENA DE SUCURSALES =====
 
-var greeting = "Hello, playground"
+enum CategoriaElectro {
+    case lineaBlanca, tecnologia, pequenos
+}
+
+struct Electrodomestico {
+    let nombre: String
+    let marca: String
+    let precioLista: Double
+    let categoria: CategoriaElectro
+}
+
+// --- Ejemplo (ya resuelto): la base define el FLUJO; las hijas cambiarán las REGLAS ---
+class Sucursal {
+    let nombre: String
+    let ciudad: String
+    
+    init(nombre: String, ciudad: String) {
+        self.nombre = nombre
+        self.ciudad = ciudad
+    }
+    
+    func descuento() -> Double {
+        return 0.05
+    }
+    
+    func costoEnvio(monto: Double) -> Double {
+        return 30.0
+    }
+    
+    // REGLA 2: este método NO se sobreescribe en las subclases
+    func cotizar(item: Electrodomestico) {
+        let precioConDescuento = item.precioLista * (1 - descuento())
+        let envio = costoEnvio(monto: precioConDescuento)
+        let total = precioConDescuento + envio
+        print("\(nombre): \(item.nombre) -> S/ \(precioConDescuento) + envio S/ \(envio) = S/ \(total)")
+    }
+}
+
+// --- TODO 14: SucursalLima ---
+class SucursalLima: Sucursal {
+    override func descuento() -> Double {
+        return 0.10
+    }
+    
+    override func costoEnvio(monto: Double) -> Double {
+        if monto >= 1500.0 {
+            return 0.0
+        } else {
+            return 30.0
+        }
+    }
+}
+
+// --- TODO 15: SucursalProvincia ---
+class SucursalProvincia: Sucursal {
+    // NO sobreescribimos descuento() (hereda el 5% de la base)
+    override func costoEnvio(monto: Double) -> Double {
+        let calculado = monto * 0.08
+        if calculado < 50.0 {
+            return 50.0
+        } else {
+            return calculado
+        }
+    }
+}
+
+// --- TODO 16: SucursalOutlet ---
+class SucursalOutlet: Sucursal {
+    override func descuento() -> Double {
+        return 0.25
+    }
+    
+    override func costoEnvio(monto: Double) -> Double {
+        return 0.0
+    }
+}
+
+// --- TODO 17: El recorrido polimórfico (REGLA 4) ---
+let refrigeradora = Electrodomestico(nombre: "Refrigeradora", marca: "Frost", precioLista: 2000.0, categoria: .lineaBlanca)
+let licuadora = Electrodomestico(nombre: "Licuadora", marca: "Mix", precioLista: 250.0, categoria: .pequenos)
+
+let sucursales: [Sucursal] = [
+    SucursalLima(nombre: "Lima Centro", ciudad: "Lima"),
+    SucursalProvincia(nombre: "Provincia Cusco", ciudad: "Cusco"),
+    SucursalOutlet(nombre: "Outlet Ate", ciudad: "Lima")
+]
+
+print("===== Refrigeradora (S/ 2000.0) =====")
+for sucursal in sucursales {
+    sucursal.cotizar(item: refrigeradora)
+}
+
+print("===== Licuadora (S/ 250.0) =====")
+for sucursal in sucursales {
+    sucursal.cotizar(item: licuadora)
+}
