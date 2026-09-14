@@ -121,3 +121,49 @@ class SucursalExpress: Sucursal {
 // Ejemplo ejecutable de comprobación para la consola:
 let express = SucursalExpress(nombre: "Express Surco", ciudad: "Lima", radioKm: 5)
 print("Fixes verificados -> Sucursal: \(express.nombre), Radio: \(express.radioKm)km")
+
+// ===== PREDICT: ¿Qué imprime? =====
+
+let misteriosa: Sucursal = SucursalLima(nombre: "Lima Centro", ciudad: "Lima")
+
+// PREDICT 6: Imprime 0.1
+// Justificación: Aunque la variable es de tipo Sucursal, el objeto instanciado en memoria es de tipo SucursalLima.
+// Swift resuelve en tiempo de ejecución cuál método llamar (polimorfismo dinámico), ejecutando el descuento() de SucursalLima.
+print(misteriosa.descuento())
+
+let monto = 2000.0 * (1 - misteriosa.descuento()) // S/ 1800.0
+
+// PREDICT 7: Imprime 0.0
+// Justificación: El monto con descuento es S/ 1800.0. Como 1800.0 >= 1500.0, la regla sobreescrita
+// de costoEnvio en SucursalLima devuelve 0.0 (envío gratis).
+print(misteriosa.costoEnvio(monto: monto))
+
+
+// ===== TODO 18: La prueba del polimorfismo (REGLA 6) =====
+
+// 1. Definimos la nueva subclase SucursalOnline
+class SucursalOnline: Sucursal {
+    override func costoEnvio(monto: Double) -> Double {
+        return 15.0
+    }
+}
+// Respuesta en comentario: Se necesitaron únicamente 5 líneas de código para implementar SucursalOnline.
+
+// 2. La agregamos al arreglo y realizamos el recorrido sin modificar cotizar ni los for-in
+let sucursalesActualizadas: [Sucursal] = [
+    SucursalLima(nombre: "Lima Centro", ciudad: "Lima"),
+    SucursalProvincia(nombre: "Provincia Cusco", ciudad: "Cusco"),
+    SucursalOutlet(nombre: "Outlet Ate", ciudad: "Lima"),
+    SucursalOnline(nombre: "Tienda Online", ciudad: "Web")
+]
+
+print("\n===== PRUEBA TODO 18: Con SucursalOnline =====")
+print("===== Refrigeradora (S/ 2000.0) =====")
+for sucursal in sucursalesActualizadas {
+    sucursal.cotizar(item: refrigeradora)
+}
+
+print("===== Licuadora (S/ 250.0) =====")
+for sucursal in sucursalesActualizadas {
+    sucursal.cotizar(item: licuadora)
+}
