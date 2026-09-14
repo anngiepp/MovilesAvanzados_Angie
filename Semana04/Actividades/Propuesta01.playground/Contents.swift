@@ -36,7 +36,7 @@ class FacturaTecsup {
         print("🎓 FACTURA DE CURSOS")
         print("Estudiante: \(estudiante)")
         print("DNI: \(dni)")
-        print("Alumno de Tecsup: \(esAlumnoTecsup ? "Sí ✅" : "No ❌")")
+        print("Alumno de Tecsup: \(esAlumnoTecsup ? "SI" : "NO")")
         print("-----------------------------------")
         
         var subtotal: Double = 0.0
