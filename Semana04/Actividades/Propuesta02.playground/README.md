@@ -1,96 +1,79 @@
-# Actividad Propuesta 02 — Sistema de Gestión de Clientes (POO en Swift)
+# Actividad Propuesta 02 — Sistema de Gestión de Clientes
 
-Este proyecto implementa un sistema orientada a objetos en **Swift** para la gestión de clientes en una entidad financiera o comercial. Aplica conceptos fundamentales de **Programación Orientada a Objetos (POO)** como **Herencia**, **Encapsulamiento** y **Sobrescritura de Métodos (`override`)**.
-
----
-
-## 📋 Requerimientos del Sistema
-
-El sistema categoriza a los clientes en dos tipos primarios (Naturales y Jurídicos) a partir de una clase base compartida:
-
-1. **Clase Base (`Cliente`)**:
-   - Define las propiedades comunes de cualquier cuenta: `codigo`, `direccion`, `fechaDeRegistro`, `numeroCuenta` y `montoMinimoApertura`.
-   - Incluye el método `mostrarDatos()` para imprimir en consola la información financiera del cliente.
-
-2. **Clase Derivada (`ClienteNatural`)**:
-   - Hereda de `Cliente`.
-   - Modela personas naturales agregando los atributos particulares: `nombreCompleto` y `dni`.
-   - Sobrescribe (`override`) el método `mostrarDatos()` para presentar la identidad de la persona junto a sus datos de cuenta base mediante `super.mostrarDatos()`.
-
-3. **Clase Derivada (`ClienteJuridico`)**:
-   - Hereda de `Cliente`.
-   - Modela empresas u organizaciones agregando atributos corporativos: `razonSocial`, `ruc` y `representanteLegal`.
-   - Sobrescribe (`override`) el método `mostrarDatos()` mostrando los registros fiscales y legales de la empresa, invocando también la lógica compartida de la clase padre.
+Documentación técnica y funcional para el módulo de administración de clientes desarrollado en **Swift** bajo el paradigma de **Programación Orientada a Objetos (POO)**.
 
 ---
 
-## 🛠️ Estructura del Código
+## 🎯 Objetivo de la Aplicación
 
-```swift
-import Foundation
+El propósito del módulo es gestionar el registro y la visualización de expedientes bancarios/comerciales diferenciando las identidades de **Personas Naturales** y **Personas Jurídicas**, optimizando la estructura mediante el uso de herencia y polimorfismo.
 
-// 1. Clase Base
-class Cliente {
-    let codigo: String
-    let direccion: String
-    let fechaDeRegistro: String
-    let numeroCuenta: String
-    let montoMinimoApertura: Double
-    
-    init(codigo: String, direccion: String, fechaDeRegistro: String, numeroCuenta: String, montoMinimoApertura: Double) {
-        self.codigo = codigo
-        self.direccion = direccion
-        self.fechaDeRegistro = fechaDeRegistro
-        self.numeroCuenta = numeroCuenta
-        self.montoMinimoApertura = montoMinimoApertura
-    }
-    
-    func mostrarDatos() {
-        print("👤 Código: \(codigo)")
-        print("📍 Dirección: \(direccion)")
-        print("📅 Fecha de registro: \(fechaDeRegistro)")
-        print("💳 Nº Cuenta: \(numeroCuenta)")
-        print("💰 Monto mínimo de apertura: S/ \(montoMinimoApertura)")
-    }
-}
+---
 
-// 2. Subclase para Personas Naturales
-class ClienteNatural: Cliente {
-    let nombreCompleto: String
-    let dni: String
-    
-    init(nombreCompleto: String, dni: String, codigo: String, direccion: String, fechaDeRegistro: String, numeroCuenta: String, montoMinimoApertura: Double) {
-        self.nombreCompleto = nombreCompleto
-        self.dni = dni
-        super.init(codigo: codigo, direccion: direccion, fechaDeRegistro: fechaDeRegistro, numeroCuenta: numeroCuenta, montoMinimoApertura: montoMinimoApertura)
-    }
-    
-    override func mostrarDatos() {
-        print("👤 Cliente Natural:")
-        print("Nombre: \(nombreCompleto)")
-        print("DNI: \(dni)")
-        super.mostrarDatos()
-    }
-}
+## 📋 Especificación de Requerimientos
 
-// 3. Subclase para Empresas (Personas Jurídicas)
-class ClienteJuridico: Cliente {
-    let razonSocial: String
-    let ruc: String
-    let representanteLegal: String
-    
-    init(razonSocial: String, ruc: String, representanteLegal: String, codigo: String, direccion: String, fechaDeRegistro: String, numeroCuenta: String, montoMinimoApertura: Double) {
-        self.razonSocial = razonSocial
-        self.ruc = ruc
-        self.representanteLegal = representanteLegal
-        super.init(codigo: codigo, direccion: direccion, fechaDeRegistro: fechaDeRegistro, numeroCuenta: numeroCuenta, montoMinimoApertura: montoMinimoApertura)
-    }
-    
-    override func mostrarDatos() {
-        print("🏢 Cliente Jurídico:")
-        print("Razón Social: \(razonSocial)")
-        print("RUC: \(ruc)")
-        print("Representante Legal: \(representanteLegal)")
-        super.mostrarDatos()
-    }
-}
+### 1. Entidad Base: `Cliente`
+Clase principal que define la estructura genérica para cualquier tipo de cliente registrado en la plataforma.
+
+* **Atributos Obligatorios:**
+  * **Código (`codigo`):** Identificador único del cliente en el sistema.
+  * **Dirección (`direccion`):** Domicilio fiscal o residencia registrada.
+  * **Fecha de Registro (`fechaDeRegistro`):** Fecha de alta del cliente en formato YYYY-MM-DD.
+  * **Número de Cuenta (`numeroCuenta`):** Identificador de la cuenta bancaria o comercial.
+  * **Monto Mínimo de Apertura (`montoMinimoApertura`):** Valor numérico decimal del fondo inicial requerido.
+
+* **Comportamiento Requerido:**
+  * **`mostrarDatos()`**: Método encargado de procesar e imprimir en consola el desglose estructurado con los datos generales de la cuenta.
+
+---
+
+### 2. Entidad Especializada: `ClienteNatural`
+Subclase que hereda de `Cliente` y modela la atención a personas físicas.
+
+* **Atributos Adicionales:**
+  * **Nombre Completo (`nombreCompleto`):** Nombres y apellidos del titular.
+  * **DNI (`dni`):** Documento Nacional de Identidad de 8 dígitos.
+
+* **Requerimiento de Comportamiento (`override`):**
+  * Debe sobrescribir el método `mostrarDatos()` para anteponer la identificación civil (`Nombre` y `DNI`) y posteriormente invocar la lógica heredada de la clase base (`super.mostrarDatos()`) para mostrar los datos de la cuenta.
+
+---
+
+### 3. Entidad Especializada: `ClienteJuridico`
+Subclase que hereda de `Cliente` y modela la relación con organizaciones o empresas.
+
+* **Atributos Adicionales:**
+  * **Razón Social (`razonSocial`):** Nombre legal de la empresa registrada.
+  * **RUC (`ruc`):** Registro Único de Contribuyentes (11 dígitos).
+  * **Representante Legal (`representanteLegal`):** Nombre del apoderado o contacto principal.
+
+* **Requerimiento de Comportamiento (`override`):**
+  * Debe sobrescribir el método `mostrarDatos()` para exponer la información corporativa y legal (`Razón Social`, `RUC` y `Representante Legal`), complementando la salida mediante el método base (`super.mostrarDatos()`).
+
+---
+
+## 🖥️ Salida Esperada en Ejecución
+
+Al instanciar ambos tipos de clientes con datos reales de prueba, la consola debe generar el siguiente reporte exacto:
+
+```text
+👤 Cliente Natural:
+Nombre: Juan Pérez
+DNI: 12345678
+👤 Código: C001
+📍 Dirección: Av. Lima 123
+📅 Fecha de registro: 2025-04-03
+💳 Nº Cuenta: 001-2025-000123
+💰 Monto mínimo de apertura: S/ 500.0
+
+-----------------------------------
+
+🏢 Cliente Jurídico:
+Razón Social: Soluciones SAC
+RUC: 20123456789
+Representante Legal: María León
+👤 Código: C002
+📍 Dirección: Jr. Empresas 456
+📅 Fecha de registro: 2025-04-01
+💳 Nº Cuenta: 001-2025-000456
+💰 Monto mínimo de apertura: S/ 3000.0
