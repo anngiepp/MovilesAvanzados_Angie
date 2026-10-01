@@ -1,6 +1,7 @@
 import UIKit
 
 class ClienteModel: NSObject {
+    var codigo: Int32 = 0
     var apellidos: String = ""
     var nombres: String = ""
     var dni: String = ""
@@ -13,5 +14,6 @@ class ClienteModel: NSObject {
         self.apellidos = apellidos
         self.nombres = nombres
         self.dni = dni
+        super.init()
     }
 }

@@ -1,6 +1,6 @@
 import UIKit
 
-class DatosIngresadosViewController: UIViewController {
+class ViewControllerConfirmacion: UIViewController {
 
     var oCliente: ClienteModel = ClienteModel()
 
@@ -14,5 +14,9 @@ class DatosIngresadosViewController: UIViewController {
         lblApellidos.text = oCliente.apellidos
         lblNombres.text = oCliente.nombres
         lblDNI.text = oCliente.dni
+    }
+
+    @IBAction func btnVolver(_ sender: UIButton) {
+        dismiss(animated: true)
     }
 }
