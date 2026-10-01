@@ -66,7 +66,7 @@
                                                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="none" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kC9-sV-AH6" placeholder="Ingresa tus apellidos" customClass="PaddedTextField" customModule="Semana06_02" customModuleProvider="target" clipsSubviews="YES">
                                                                                 <fontDescription key="fontDescription" type="system" pointSize="17" />
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="next" autocorrectionType="no" spellCheckingType="no" />
-                                                                                <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor" />
+                                                                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor" />
                                                                                 <color key="textColor" systemColor="labelColor" />
                                                                                 <userDefinedRuntimeAttributes>
                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -89,7 +89,7 @@
                                                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="none" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wt3-QC-4ms" placeholder="Ingresa tus nombres" customClass="PaddedTextField" customModule="Semana06_02" customModuleProvider="target" clipsSubviews="YES">
                                                                                 <fontDescription key="fontDescription" type="system" pointSize="17" />
                                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="next" autocorrectionType="no" spellCheckingType="no" />
-                                                                                <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor" />
+                                                                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor" />
                                                                                 <color key="textColor" systemColor="labelColor" />
                                                                                 <userDefinedRuntimeAttributes>
                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -112,7 +112,7 @@
                                                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="none" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3eb-f6-qQf" placeholder="8 dígitos" customClass="PaddedTextField" customModule="Semana06_02" customModuleProvider="target" clipsSubviews="YES">
                                                                                 <fontDescription key="fontDescription" type="system" pointSize="17" />
                                                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" autocorrectionType="no" spellCheckingType="no" />
-                                                                                <color key="backgroundColor" systemColor="tertiarySystemBackgroundColor" />
+                                                                                <color key="backgroundColor" systemColor="secondarySystemBackgroundColor" />
                                                                                 <color key="textColor" systemColor="labelColor" />
                                                                                 <userDefinedRuntimeAttributes>
                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -192,6 +192,7 @@
                         <outlet property="tfApellidos" destination="kC9-sV-AH6" id="ypf-Dg-5oI" />
                         <outlet property="tfDNI" destination="3eb-f6-qQf" id="nT8-S1-VmY" />
                         <outlet property="tfNombres" destination="Wt3-QC-4ms" id="ny6-wQ-x45" />
+                        <outlet property="formularioScrollView" destination="u2B-90-U4U-scroll" id="out-form-scroll" />
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dvv-dn-YP4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder" />
