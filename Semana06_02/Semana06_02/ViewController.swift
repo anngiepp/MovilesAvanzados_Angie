@@ -10,17 +10,14 @@ class ViewController: UIViewController {
         super.viewDidLoad()
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showDatosIngresados" {
-            let apellidos = tfApellidos.text ?? ""
-            let nombres = tfNombres.text ?? ""
-            let dni = tfDNI.text ?? ""
-
-            let cliente = ClienteModel(apellidos: apellidos, nombres: nombres, dni: dni)
-
-            if let destinoVC = segue.destination as? DatosIngresadosViewController {
-                destinoVC.oCliente = cliente
-            }
-        }
+    @IBAction func btnContinuar(_ sender: UIButton) {
+        let cliente = ClienteModel(apellidos: tfApellidos.text ?? "",
+                                   nombres: tfNombres.text ?? "",
+                                   dni: tfDNI.text ?? "")
+        let pantalla = storyboard!.instantiateViewController(
+            withIdentifier: "ViewControllerConfirmacion") as! ViewControllerConfirmacion
+        pantalla.oCliente = cliente
+        view.endEditing(true)
+        present(pantalla, animated: true)
     }
 }

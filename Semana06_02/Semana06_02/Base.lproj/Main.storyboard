@@ -90,6 +90,9 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Continuar"/>
+                                <connections>
+                                    <action selector="btnContinuar:" destination="u2B-90-U4U" eventType="touchUpInside" id="act-continuar"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="1rI-7Y-3kU"/>
@@ -109,7 +112,7 @@
         <!--View Controller-->
         <scene sceneID="Xuc-w4-kLa">
             <objects>
-                <viewController id="W9O-A5-Jkp" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ViewControllerConfirmacion" id="W9O-A5-Jkp" customClass="ViewControllerConfirmacion" customModule="Semana06_02" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Bbg-XR-31b">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -170,10 +173,23 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" translatesAutoresizingMaskIntoConstraints="NO" id="btn-volver">
+                                <rect key="frame" x="147" y="350" width="99" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Volver"/>
+                                <connections>
+                                    <action selector="btnVolver:" destination="W9O-A5-Jkp" eventType="touchUpInside" id="act-volver"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="K7t-8z-k6Y"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <connections>
+                        <outlet property="lblApellidos" destination="Bs9-uj-FLC" id="out-apellidos"/>
+                        <outlet property="lblNombres" destination="Ns9-Rs-0Tn" id="out-nombres"/>
+                        <outlet property="lblDNI" destination="q6p-xO-zM6" id="out-dni"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lVe-UB-9Db" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
