@@ -10,11 +10,12 @@ App de datos del cliente construida con UIKit y `Main.storyboard`. Corresponde a
 
 ## Flujo y conexiones
 
-- `ViewController`: campos `tfApellidos`, `tfNombres` y `tfDNI`; el botón Continuar llama a `btnContinuar:`.
+- `ViewController`: campos `tfApellidos`, `tfNombres` y `tfDNI`; el botón Revisar datos llama a `btnContinuar:`.
 - `ClienteModel`: clase que hereda de `NSObject`, con código, apellidos, nombres y DNI. El DNI es texto para conservar ceros iniciales.
-- `ViewControllerConfirmacion`: Custom Class y Storyboard ID de la segunda escena. Recibe el modelo antes de `present(...)`, muestra sus datos en tres UILabel y cierra con `dismiss(...)` desde Volver.
+- `ViewControllerConfirmacion`: Custom Class y Storyboard ID de la segunda escena. Recibe el modelo antes de `present(...)`, muestra sus datos en tres UILabel y cierra con `dismiss(...)` desde Volver al formulario.
 - Todos los controles, outlets, acciones y restricciones están definidos en el storyboard. No se usa SwiftUI.
-- Se mantienen el diseño sencillo y las dos pantallas del avance. Auto Layout y un UIScrollView permiten adaptar y desplazar el contenido.
+- El rediseño usa tarjetas, campos verticales con margen interior y botones de ancho completo. Auto Layout y un UIScrollView permiten adaptar y desplazar el contenido.
+- Los colores del sistema se adaptan al modo claro y oscuro. El teclado numérico incluye Listo; el formulario se desplaza para mantener visible el campo activo.
 
 En este ejercicio se usa presentación modal porque la confirmación se abre temporalmente sobre el formulario. `Show` y `prepare(for:sender:)` se usarán en la calculadora según la guía.
 
@@ -32,4 +33,10 @@ La validación comprueba el formato del DNI (ocho dígitos), sin consultar ident
 
 ## Avances en Git
 
-Los avances de esta app se guardan en `main`: estado inicial, flujo modal y validación con Auto Layout. Las correcciones se realizaron con asistencia de Codex. El rediseño y la calculadora todavía no se han iniciado; quedan pendientes de la indicación del usuario.
+La versión base se conserva en `main`. La rama existente para IA es `ai-assisted`, que sigue a `origin/ai-assisted`; se incorporaron los cuatro commits de la app base y después se guardaron avances independientes del rediseño.
+
+Las pantallas siguen en `Main.storyboard`. `PaddedTextField` añade únicamente margen interior a los campos colocados en Interface Builder. El código UIKit gestiona teclado, validación y paso de datos; no se usa SwiftUI.
+
+Comprobaciones del rediseño: compilación correcta con Xcode 26.3, formulario y confirmación en iPhone 17 Pro, apellido compuesto, DNI con ceros iniciales, retorno conservando valores, cierre del teclado con Listo y revisión visual del formulario en modo oscuro. Se restauró el simulador al modo claro después de la revisión.
+
+El rediseño se realizó con asistencia de Codex. La calculadora queda pendiente. Los commits se guardaron localmente; todavía no se realizó push.
