@@ -9,11 +9,13 @@ import UIKit
 
 class PersonasTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var PersonaImagen: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
 
+    @IBOutlet weak var personaNombre: UILabel!
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
