@@ -28,7 +28,32 @@ struct ContentView: View {
                             Text("Sí").tag(true)
                         }.pickerStyle(.segmented)
                     }
-                    Text("Sistema de pensiones: ONP (13%)").font(.subheadline)
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Sistema de pensiones").font(.subheadline).bold()
+                        Picker("Sistema de pensiones", selection: $formulario.sistema) {
+                            Text("ONP").tag(SistemaPension.onp)
+                            Text("AFP").tag(SistemaPension.afp)
+                        }.pickerStyle(.segmented)
+                    }
+                    if formulario.sistema == .afp {
+                        HStack {
+                            Text("AFP").font(.subheadline).bold()
+                            Picker("AFP", selection: $formulario.afp) {
+                                Text("AFP Ejemplo").tag("AFP Ejemplo")
+                                Text("Habitat (flujo)").tag("Habitat (flujo)")
+                                Text("Integra (flujo)").tag("Integra (flujo)")
+                                Text("Prima (flujo)").tag("Prima (flujo)")
+                                Text("Profuturo (flujo)").tag("Profuturo (flujo)")
+                            }.frame(maxWidth: .infinity, alignment: .trailing)
+                        }
+                        Text(formulario.afp == "AFP Ejemplo" ? "Tasas de prueba: fondo 10%, comisión 1.60%, seguro 1.35%." : "Tasas SBS de octubre 2026. Comisión sobre flujo; modelo simplificado sin tope de seguro.")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                    HStack(alignment: .top, spacing: 12) {
+                        campo("Horas extras 25%", texto: $formulario.horas25)
+                        campo("Horas extras 35%", texto: $formulario.horas35)
+                    }
+                    campo("Adelantos (S/)", texto: $formulario.adelanto)
                     Text("Usa punto o coma decimal, sin separadores de miles.").font(.caption).foregroundStyle(.secondary)
                     Button(action: calcular) {
                         Text("Calcular boleta").font(.headline).frame(maxWidth: .infinity).padding(.vertical, 8)
@@ -45,6 +70,14 @@ struct ContentView: View {
         }.background(Color(red: 0.95, green: 0.96, blue: 0.98))
             .scrollDismissesKeyboard(.interactively)
             .onChange(of: formulario) { _, _ in resultado = nil; error = "" }
+            .onAppear {
+                #if DEBUG
+                // Datos reproducibles para capturas del simulador; no agrega controles.
+                if ProcessInfo.processInfo.arguments.contains("--caso3") {
+                    formulario = FormularioBoleta(sueldo: "3000", dias: "30", hijos: true, sistema: .afp, afp: "AFP Ejemplo", horas25: "4", horas35: "4", adelanto: "200")
+                }
+                #endif
+            }
     }
 
     private func campo(_ titulo: String, texto: Binding<String>) -> some View {
