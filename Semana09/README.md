@@ -16,3 +16,4 @@ El Excel, análisis, fuentes, capturas, guías y archivos auxiliares se entregan
 
 1. inicio: estructura SwiftUI y alcance de la actividad
 2. config: parametros de calculo y fuentes
+3. modelo: calculo de boleta del nivel 1
