@@ -15,3 +15,4 @@ El Excel, análisis, fuentes, capturas, guías y archivos auxiliares se entregan
 ## Hitos completados
 
 1. inicio: estructura SwiftUI y alcance de la actividad
+2. config: parametros de calculo y fuentes
