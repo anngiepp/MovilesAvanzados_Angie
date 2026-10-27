@@ -68,6 +68,7 @@ struct ContentView: View {
             }.padding(20).frame(maxWidth: 640)
                 .frame(maxWidth: .infinity)
         }.background(Color(red: 0.95, green: 0.96, blue: 0.98))
+            .preferredColorScheme(.light)
             .scrollDismissesKeyboard(.interactively)
             .onChange(of: formulario) { _, _ in resultado = nil; error = "" }
             .onAppear {

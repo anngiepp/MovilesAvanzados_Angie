@@ -23,7 +23,10 @@ El Excel, análisis, fuentes, capturas, guías y archivos auxiliares se entregan
 7. excel: calculadora y explicacion de formulas
 8. validacion: app y Excel coinciden en los cuatro casos
 9. analisis: respuestas y casos con datos reales
+10. docs: capturas y guia de entrega
 
 ## Pruebas
 
 Desde `BoletaPagoApp`, ejecutar `swift test --disable-sandbox`. El paquete prueba el mismo modelo utilizado por la aplicación.
+
+Verificación final: compilación iOS correcta, 12 pruebas sin fallos y control cruzado externo de 91 importes sin diferencias al centavo. Los cuatro netos son S/ 2,175.00; S/ 1,516.41; S/ 2,631.73 y S/ 3,011.17.
