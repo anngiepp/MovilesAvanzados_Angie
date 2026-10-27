@@ -22,6 +22,7 @@ El Excel, análisis, fuentes, capturas, guías y archivos auxiliares se entregan
 6. funcionalidad: AFP horas extras y adelantos
 7. excel: calculadora y explicacion de formulas
 8. validacion: app y Excel coinciden en los cuatro casos
+9. analisis: respuestas y casos con datos reales
 
 ## Pruebas
 
