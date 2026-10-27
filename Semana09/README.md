@@ -17,3 +17,8 @@ El Excel, análisis, fuentes, capturas, guías y archivos auxiliares se entregan
 1. inicio: estructura SwiftUI y alcance de la actividad
 2. config: parametros de calculo y fuentes
 3. modelo: calculo de boleta del nivel 1
+4. pruebas: casos 1 y 2 verificados
+
+## Pruebas
+
+Desde `BoletaPagoApp`, ejecutar `swift test --disable-sandbox`. El paquete prueba el mismo modelo utilizado por la aplicación.
