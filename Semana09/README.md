@@ -20,6 +20,7 @@ El Excel, análisis, fuentes, capturas, guías y archivos auxiliares se entregan
 4. pruebas: casos 1 y 2 verificados
 5. ui: formulario y boleta del nivel 1
 6. funcionalidad: AFP horas extras y adelantos
+7. excel: calculadora y explicacion de formulas
 
 ## Pruebas
 
