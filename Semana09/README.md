@@ -21,6 +21,7 @@ El Excel, análisis, fuentes, capturas, guías y archivos auxiliares se entregan
 5. ui: formulario y boleta del nivel 1
 6. funcionalidad: AFP horas extras y adelantos
 7. excel: calculadora y explicacion de formulas
+8. validacion: app y Excel coinciden en los cuatro casos
 
 ## Pruebas
 
