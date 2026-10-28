@@ -77,4 +77,20 @@ final class BoletaTests: XCTestCase {
         XCTAssertEqual(Decimal(string: "52.045")!.centavos, Decimal(string: "52.05"))
         XCTAssertEqual(Decimal(string: "-52.045")!.centavos, Decimal(string: "-52.05"))
     }
+
+    func testCasosPropios() throws {
+        // Propio 1: S/ 2,300, ONP
+        let p1 = try Boleta().calcular(DatosBoleta(sueldo: 2300, dias: 30, tieneHijos: false))
+        XCTAssertEqual(p1.totalRemuneraciones, 2300)
+        XCTAssertEqual(p1.totalDescuentos, 299)
+        XCTAssertEqual(p1.neto, 2001)
+        XCTAssertEqual(p1.aportaciones[0].monto, 207)
+        // Propio 2: S/ 2,500, AFP Habitat
+        let p2 = try Boleta().calcular(DatosBoleta(sueldo: 2500, dias: 30, tieneHijos: false, sistema: .afp, afp: "Habitat (flujo)"))
+        XCTAssertEqual(p2.descuentos.map(\.monto), ["0", "250", "36.75", "34.25", "0"].map { Decimal(string: $0)! })
+        XCTAssertEqual(p2.totalRemuneraciones, 2500)
+        XCTAssertEqual(p2.totalDescuentos, 321)
+        XCTAssertEqual(p2.neto, 2179)
+        XCTAssertEqual(p2.aportaciones[0].monto, 225)
+    }
 }

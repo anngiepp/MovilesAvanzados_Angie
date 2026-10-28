@@ -7,7 +7,7 @@ struct TasasAFP {
 }
 
 enum Parametros {
-    // Fuentes y fechas completas en docs/fuentes.md. Corte: 27/10/2026.
+    // Fuentes y fechas completas en docs/fuentes.md. Corte: 28/10/2026.
     static let rmv = Decimal(1230)
     static let asignacion = Decimal(string: "0.10")!
     static let onp = Decimal(string: "0.13")!

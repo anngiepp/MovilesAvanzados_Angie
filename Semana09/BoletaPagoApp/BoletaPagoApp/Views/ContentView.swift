@@ -63,7 +63,7 @@ struct ContentView: View {
                     }
                 }.padding(18).background(Color.white).cornerRadius(18)
                 if let r = resultado { boleta(r) }
-                Text("RMV S/ 1,230 · Consulta: 27/10/2026\nModelo académico sin renta de quinta categoría ni bases mínimas de EsSalud.")
+                Text("RMV S/ 1,230 · Consulta: 28/10/2026\nModelo académico sin renta de quinta categoría ni bases mínimas de EsSalud.")
                     .font(.caption).foregroundStyle(.secondary)
             }.padding(20).frame(maxWidth: 640)
                 .frame(maxWidth: .infinity)
