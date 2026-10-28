@@ -44,8 +44,9 @@ extension Decimal {
     }
     var soles: String {
         let formato = NumberFormatter()
-        formato.locale = Locale(identifier: "en_US_POSIX")
+        formato.locale = Locale(identifier: "en_US")
         formato.numberStyle = .decimal
+        formato.usesGroupingSeparator = true
         formato.minimumFractionDigits = 2
         formato.maximumFractionDigits = 2
         return "S/ " + (formato.string(from: NSDecimalNumber(decimal: self)) ?? "0.00")
