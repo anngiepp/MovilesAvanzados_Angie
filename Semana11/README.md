@@ -1,6 +1,6 @@
-# Semana 11 · Ventas (UIKit + Core Data)
+# Semana 11 · Compras (SwiftUI + SwiftData)
 
-App de ventas para una tienda, hecha con **UIKit** (interfaz por código) y **Core Data**. Tiene login, registro y dos roles: **Vendedor** y **Supervisor**, y las pestañas cambian según el rol. Grupo **A**.
+App de compras para una distribuidora, hecha con **SwiftUI** y **SwiftData**. Tiene login, registro y dos roles, **Comprador** y **Supervisor**, y las pestañas cambian según el rol. Corresponde al Grupo **B**.
 
 **Alumna:** Angie Portocarrero
 
@@ -10,89 +10,89 @@ App de ventas para una tienda, hecha con **UIKit** (interfaz por código) y **Co
 
 | Entregable | Dónde está |
 |---|---|
-| Expediente (modelo, permisos, reglas, casos, plan de commits) | `docs/Expediente.md` |
-| App en Xcode | `Ventas/Ventas.xcodeproj` |
-| Excel (calculadora, casos vs app y cierre de IGV) | `Excel/Ventas_Semana11.xlsx` |
-| Cierre de IGV del mes | `docs/CierreIGV.md`, hoja *Cierre IGV* del Excel y tarjeta en el Resumen |
+| Expediente (enunciado, modelo, permisos, reglas, casos y plan de commits) | `docs/Expediente.md` |
+| App en Xcode | `Compras/Compras.xcodeproj` |
+| Excel (calculadora, casos vs app y crédito fiscal) | `Excel/Compras_Semana11.xlsx` |
+| Cierre de IGV del mes | `docs/CierreIGV.md`, la hoja *Cierre IGV* del Excel y la tarjeta en el Resumen |
 | Consultas a la IA | `PROMPTS.md` |
 | Capturas e ícono en la pantalla de inicio | `docs/capturas/` |
 
 ## Cómo ejecutar
 
-1. Abrir `Ventas/Ventas.xcodeproj` en Xcode 16 o posterior.
+1. Abrir `Compras/Compras.xcodeproj` en Xcode 16 o posterior.
 2. Elegir un simulador de iPhone con iOS 17 o posterior y darle ▶.
-3. La primera vez se cargan datos de ejemplo (ver abajo). Para empezar de cero: borrar la app del simulador y volver a correrla.
+3. La primera vez se cargan los datos de ejemplo (ver abajo). Para empezar de cero, borrar la app del simulador y volver a correrla.
 
 ## Usuarios predeterminados
 
 | Usuario | Clave | Rol | Nombre |
 |---|---|---|---|
-| `angie1` | `123456` | Vendedor | Carlos Ruiz |
-| `angie2` | `123456` | Vendedor | Ana Díaz |
-| `lparedes` | `123456` | Supervisor | Lucía Paredes · **no viene cargado**: se crea en *Crear cuenta* (caso de prueba 1) |
+| `angie1` | `123456` | Comprador | Angie Uno |
+| `angie2` | `123456` | Supervisor | Angie Dos |
 
 Datos de ejemplo que se cargan con ellos (`DatosEjemplo.swift`):
-- **Productos:** Laptop Pro 14 (S/ 200, stock 40), Monitor 24" (S/ 450, stock 9), Mouse inalámbrico (S/ 35, stock 120) y Teclado mecánico (S/ 129.90, stock 4).
-- **Clientes:** Comercial Andina SAC (ya es VIP), María Quispe (Frecuente), Luis Rojas y Tienda Sol EIRL (Regular).
-- **Ventas:** 7 ventas de los últimos días, una de ellas anulada, para que el Resumen y el ranking tengan datos.
+- **Proveedores:** Distribuidora Lima SAC, TecnoImport EIRL y Mayorista Sur SAC.
+- **Productos:**
+  - Laptop Pro 14: stock 40, costo S/ 110.00
+  - Monitor 24": stock 9, costo S/ 300.00
+  - Mouse inalámbrico: stock 120, costo S/ 18.50
+  - Teclado mecánico: stock 4, costo S/ 80.00
+- **Compras de angie1:**
+  - 3 a crédito por pagar, una de ellas **vencida** (TecnoImport, S/ 2,183.00)
+  - 1 al contado
+  - 1 rechazada con su motivo
 
-## Base de datos (Core Data)
+## Base de datos (SwiftData)
 
-- **Modelo:** `Ventas.xcdatamodeld`, con las entidades Usuario, Producto, Cliente y Venta y sus relaciones.
-- **Conexión:** `AppDelegate.swift` crea el `NSPersistentContainer(name: "Ventas")`, que carga el modelo y abre el archivo `Ventas.sqlite`. Su ruta sale en la consola de Xcode al iniciar la app.
-- **Uso:** `BD.swift` da el contexto (`BD.contexto`) y `BD.guardar()`. Las pantallas leen con `NSFetchRequest` + `NSPredicate` y escriben creando objetos (`Venta(context:)`), cambiando sus atributos y llamando a `guardar()`.
-
-## Modelo de datos
-
-| Entidad | Atributos | Relaciones |
-|---|---|---|
-| Usuario | nombre, usuario, clave, rol | ventas ▶ Venta (To Many, **Deny**) |
-| Producto | nombre, categoria, precio, stock | ventas ▶ Venta (To Many, **Deny**) |
-| Cliente | nombre, documento | ventas ▶ Venta (To Many, **Deny**) |
-| Venta | fecha, cantidad, precioUnitario, descuento, igv, total, anulada, motivoAnulacion | vendedor, producto, cliente (To One, Nullify) |
+- **Modelo:** las 4 clases `@Model` están en `Modelos.swift`. Las relaciones To Many tienen `deleteRule: .deny` y su `inverse`.
+- **Conexión:** en `ComprasApp.swift`, `.modelContainer(for: [Usuario.self, Proveedor.self, Producto.self, Compra.self])` crea la base y la pone a disposición de todas las vistas.
+- **Uso:**
+  - Las vistas leen con `@Query`, que se actualiza sola, y con `FetchDescriptor` + `#Predicate`.
+  - Escriben con `contexto.insert(...)`, cambiando propiedades y con `contexto.delete(...)`, donde el contexto sale de `@Environment(\.modelContext)`.
+- **Sesión:** `Sesion` es una clase `@Observable` puesta con `.environment(sesion)`. Si `sesion.usuario` es `nil` se muestra el login; si no, las pestañas.
 
 ## Pantallas
 
-| | Vendedor | Supervisor |
+| | Comprador | Supervisor |
 |---|---|---|
-| Pestañas | Productos · Clientes · Venta · Mis ventas · Cuenta | Resumen · Ventas · Productos · Clientes · Cuenta |
+| Pestañas | Productos · Proveedores · Compra · Mis compras | Resumen · Aprobar · Por pagar · Productos · Proveedores |
 
-- **A1 Login** y **A2 Crear cuenta**: usuario único sin importar mayúsculas, clave de mínimo 6 y confirmación.
-- **A3 Productos**: búsqueda, chips por categoría y stock en color (verde > 10, ámbar 6–10, rojo ≤ 5). Solo el supervisor crea, edita y borra.
-- **A4 Clientes**: total comprado y categoría (Regular, Frecuente, VIP) calculados con las ventas no anuladas.
-- **A5 Nueva venta**: el vendedor sale de la sesión; calcula subtotal, descuento VIP 10 %, IGV 18 % y total; valida el stock.
-- **A6 Mis ventas**: solo las del vendedor, indicadores de hoy y del mes, filtro Todas/Hoy/Mes y búsqueda por cliente.
-- **A7 Ventas del equipo**: todas las ventas, filtro por periodo y por vendedor, deslizar para anular.
-- **A8 Anular**: motivo obligatorio, devuelve el stock.
-- **A9 Resumen**: vendido hoy vs ayer, IGV del mes, gráfico de 7 días, ranking de vendedores, stock bajo y **cierre de IGV**.
+- **B1 Login** y **B2 Crear cuenta:** el usuario es único sin importar mayúsculas y la clave tiene mínimo 6 caracteres con su confirmación.
+- **B3 Productos:** costo promedio, stock en color y valor del inventario (stock × costo promedio). Solo el supervisor crea, edita y borra.
+- **B4 Proveedores:** total comprado y "N por pagar" o "Al día", calculados desde las compras de cada proveedor.
+- **B5 Nueva compra:** subtotal, IGV 18 % y total, contado o crédito a 30 días, y un aviso cuando llega a S/ 5,000.
+- **B6 Mis compras:** Todas, Pendientes o Rechazadas (con su motivo). El comprador solo ve las suyas.
+- **B7 Aprobar:** muestra cómo cambiarían el stock y el costo promedio. Rechazar pide un motivo.
+- **B8 Por pagar:** Pendientes, Vencidas o Pagadas con `#Predicate`, deslizar para Pagar y el total por pagar.
+- **B9 Resumen:** inventario, crédito fiscal, por pagar, por aprobar, total comprado por proveedor con barras y cierre de IGV.
+- **Cuenta:** el avatar de arriba a la derecha abre un menú con nombre, rol y Cerrar sesión.
 
 ## Organización del código
 
 ```
-Ventas/Ventas/
-├── AppDelegate.swift / SceneDelegate.swift   Core Data y cambio entre login y pestañas
-├── Ventas.xcdatamodeld                        las 4 entidades con sus relaciones
-├── BD.swift                                   contexto, guardar() y la Sesion
-├── Reglas.swift                               categoría, descuento, IGV, total y filtros de fecha
-├── Estilos.swift                              celdas, tarjetas, chips y etiquetas reutilizables
-├── DatosEjemplo.swift                         datos iniciales
-├── LoginViewController / RegistroViewController / TabsViewController / CuentaViewController
-├── ProductosViewController / ClientesViewController
-├── NuevaVentaViewController / SeleccionViewController
-├── MisVentasViewController / VentasEquipoViewController / AnularVenta
-└── ResumenViewController                      incluye el gráfico de barras
+Compras/Compras/
+├── ComprasApp.swift        modelContainer, sesión y RaizView (login o pestañas)
+├── Modelos.swift           las 4 clases @Model con sus relaciones
+├── Reglas.swift            Sesion, IGV, aprobación, costo promedio, formatos
+├── Estilo.swift            paleta vintage, botones, tarjetas, filas, menú del avatar
+├── DatosEjemplo.swift      datos iniciales
+├── LoginView / RegistroView / PrincipalView (barra de pestañas)
+├── ProductosView / ProveedoresView      (con sus formularios)
+├── NuevaCompraView / MisComprasView
+├── AprobarView / PorPagarView / ResumenView
 ```
-
-## Excel
-
-`Excel/Ventas_Semana11.xlsx` tiene 5 hojas: **Parámetros** (IGV, descuento VIP, límites de categoría y de stock), **Venta** (calculadora con los mismos datos de Nueva venta), **Casos** (casos 4, 5, 6, 8 y 11 calculados con fórmulas y comparados con lo que muestra la app), **Cierre IGV** (IGV de cada venta, crédito fiscal del grupo B y resultado) y **Explicación** (cada fórmula en palabras y dónde está en el código).
 
 ## Casos de prueba
 
-Los 9 casos del laboratorio más 2 propios están en `docs/Expediente.md` (sección 6) con su resultado esperado.
+Los 9 casos del laboratorio, 2 propios y el del cierre de IGV están en `docs/Expediente.md` (sección 6), con su resultado esperado.
 
 ## Cierre de IGV del mes
 
-**IGV por pagar = IGV de ventas − crédito fiscal de compras** (si sale negativo es saldo a favor).
+**IGV por pagar = IGV de ventas (grupo A) − crédito fiscal de compras (grupo B).** Si sale negativo, es saldo a favor.
 
-En el Resumen está la tarjeta **Cierre de IGV del mes**: toma el IGV de las ventas no anuladas del mes, se escribe el crédito fiscal que trae el grupo B y la app calcula el resultado. Las cifras y el cuadro para la clase están en `docs/CierreIGV.md`.
+En el Resumen está la tarjeta **Cierre de IGV del mes**:
+1. Toma el crédito fiscal del mes, que es el IGV de las compras aprobadas.
+2. Se escribe el IGV de ventas que trae el grupo A.
+3. La app calcula el resultado.
+
+Más detalle en `docs/CierreIGV.md`.

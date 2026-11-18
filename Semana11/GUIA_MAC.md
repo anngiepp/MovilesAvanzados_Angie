@@ -1,53 +1,53 @@
-# Guía rápida para terminar en la Mac
+# Guía rápida en la Mac
 
-Todo el código ya está listo. En la Mac solo falta compilar, probar y sacar capturas.
+## 1. Abrir y correr
 
-## 1. Bajar el repo (2 min)
+1. Abrir `Semana11/Compras/Compras.xcodeproj`.
+2. Elegir un simulador de iPhone y presionar **⌘R**.
+3. Para empezar con datos limpios: mantener presionado el ícono **Compras** en el simulador ▶ Eliminar app ▶ volver a correr.
 
-```bash
-cd ~/Desktop
-git clone https://github.com/anngiepp/MovilesAvanzados_Angie.git   # o: git pull si ya lo tienes
-open MovilesAvanzados_Angie/Semana11/Ventas/Ventas.xcodeproj
-```
-
-## 2. Compilar (3 min)
-
-1. Arriba elegir el esquema **Ventas** y un simulador (iPhone 16 o el que haya).
-2. **⌘R**. Si pide equipo de firma, en el simulador no hace falta; si molesta: target ▶ Signing & Capabilities ▶ Team = tu Apple ID.
-3. Si el proyecto no abre (plan B): File ▶ New ▶ Project ▶ App, nombre `Ventas`, Interface **Storyboard**, Storage **Core Data**. Borra `ViewController.swift`, `Main.storyboard` y el `.xcdatamodeld` que crea, y arrastra todo el contenido de `Semana11/Ventas/Ventas/`. En Info quita la entrada *Main storyboard file base name* y la de *Storyboard Name* dentro de *Application Scene Manifest*.
-
-## 3. Probar los casos (15 min)
+## 2. Probar los casos
 
 | N.º | Cómo probarlo |
 |---|---|
-| 1 | Crear cuenta: Lucía Paredes / `lparedes` / Supervisor → entra. Cerrar sesión, crear `LPAREDES` → "Usuario repetido" |
-| 2 | Crear cuenta con claves distintas, y con clave `1234` → mensajes de error |
-| 3 | Login `angie1` con clave mala → "Usuario o clave incorrectos" |
-| 4 | Login `angie1` / `123456` → Venta: Comercial Andina SAC, Laptop Pro 14, cantidad 2 → total S/ 424.80, stock 38 |
-| 5 | Venta: Tienda Sol EIRL, Mouse inalámbrico, cantidad 3 → total S/ 123.90 |
-| 6 | Venta: Laptop Pro 14, escribir 50 → "Stock insuficiente" |
-| 7 | Mis ventas como `angie1` → solo sus ventas, sin deslizar |
-| 8 | Login `lparedes` → Ventas → deslizar la venta del caso 4 → Anular sin motivo (botón gris) y con motivo → stock 40, Resumen baja 424.80 |
-| 9 | Clientes → deslizar Comercial Andina → "No se puede borrar" |
-| 10 | Como `angie1` en Productos → sin "+" y sin borrar |
-| 11 | Como `angie1`: venta a Tienda Sol de 8 Laptop → en Clientes pasa a Frecuente |
-| 12 | Como `lparedes` en Resumen → Cierre de IGV → Ingresar crédito fiscal `2361.60` → "Saldo a favor". Captura `cierre_igv.png` y anota el IGV de ventas en `docs/CierreIGV.md` |
+| 1 | Crear cuenta: Marco Torres / `mtorres` / Comprador → entra. Cerrar sesión (avatar) y crear otra vez `MTORRES` → "Ya existe" / usuario repetido |
+| 2 | Login `angie1` con clave mala → "Usuario o clave incorrectos" |
+| 3 | Login `angie1` / `123456` → Compra: Distribuidora Lima, Laptop Pro 14, cantidad 10, costo 120, **Crédito 30 días** → total S/ 1,416.00, stock 50, costo promedio 112.00 |
+| 4 | Igual que el 3 pero **Contado** → como `angie2`, en Por pagar ▶ Pendientes no aparece |
+| 5 | (Con datos limpios) Laptop, cantidad 50, costo 120 → total 7,080.00 → "Enviar a aprobación"; en Productos la laptop sigue en 40 |
+| 6 | Login `angie2` / `123456` → Aprobar → **Aprobar** → stock 90, costo promedio 115.56, aparece en Por pagar |
+| 7 | Hacer otra compra grande con `angie1`; con `angie2` tocar Rechazar sin motivo (no deja) y luego con motivo → en Mis compras de `angie1` se ve el motivo |
+| 8 | `angie2` → Por pagar ▶ Vencidas → TecnoImport con VENCIDA → deslizar **Pagar** → pasa a Pagadas y el total baja 2,183.00 |
+| 9 | `angie1` → Mis compras: solo sus compras y ninguna opción de pagar |
+| 10 | `angie1` → Productos: sin "+" y sin borrar |
+| 11 | `angie2` → Proveedores → deslizar Distribuidora Lima → "No se puede borrar" |
+| 12 | `angie2` → Resumen ▶ Cierre de IGV ▶ Ingresar IGV de ventas `734.10` |
 
-Toma captura de cada pantalla con **⌘S** en el simulador (se guardan en el Escritorio) y pásalas a `Semana11/docs/capturas/`.
+## 3. Capturas
 
-## 4. Ícono (1 min)
+En el simulador **⌘S** guarda la captura en el Escritorio. Muévelas a `Semana11/docs/capturas/` con estos nombres:
 
-Ya está puesto en `Assets.xcassets ▶ AppIcon` y el nombre "Ventas" en Display Name. Detén la app, **Shift + ⌘ + H** en el simulador y captura la pantalla de inicio (`docs/capturas/inicio.png`).
+| Archivo | Qué mostrar |
+|---|---|
+| `b1_login.png` | Login (y `caso2_login_error.png` con el error) |
+| `b2_registro.png` | Crear cuenta con "✓ Disponible" (y `caso1_usuario_repetido.png`) |
+| `b3_productos.png` | Productos con el valor del inventario |
+| `b4_proveedores.png` | Proveedores con "por pagar" y "Al día" |
+| `b5_compra_credito.png` | Caso 3 antes de registrar (total 1,416.00) |
+| `b5_compra_aprobacion.png` | Caso 5 con el aviso de S/ 5,000 |
+| `b6_mis_compras.png` | Mis compras con una rechazada y su motivo |
+| `b7_aprobar.png` | Aprobar con la vista previa 40 → 90 y 110.00 → 115.56 |
+| `b8_por_pagar.png` | Por pagar ▶ Vencidas con VENCIDA |
+| `b9_resumen.png` | Resumen con inventario, crédito fiscal y barras |
+| `cierre_igv.png` | Tarjeta del cierre de IGV con el IGV de ventas ingresado |
+| `menu_cuenta.png` | Menú del avatar con Cerrar sesión |
+| `inicio.png` | Pantalla de inicio (⇧⌘H) con el ícono "Compras" |
 
-## 5. Subir
+## 4. Subir
 
 ```bash
 cd ~/Desktop/MovilesAvanzados_Angie
 git add Semana11
-git commit -m "semana11: capturas de los casos de prueba e ícono"
+git commit -m "semana11: capturas de los casos de prueba"
 git push
 ```
-
-## Para borrar los datos y empezar de cero
-
-En el simulador mantener presionado el ícono ▶ Eliminar app, y volver a correr.

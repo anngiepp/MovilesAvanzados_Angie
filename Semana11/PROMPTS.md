@@ -1,37 +1,37 @@
 # PROMPTS.md · Consultas a la IA
 
-Formato: Contexto, Tarea, Restricciones, Formato esperado y qué hice con la respuesta.
+Cada consulta tiene el formato del laboratorio: Contexto, Tarea, Restricciones, Formato esperado y qué hice con la respuesta.
 
 ---
 
 ## Consulta 1 · Revisar el expediente
 
-- **Contexto:** Laboratorio 11, Grupo A (Ventas con UIKit + Core Data). Ya tenía las entidades, roles y reglas del enunciado.
-- **Tarea:** ordenar el expediente con la plantilla del anexo y comprobar los ejemplos numéricos (descuento VIP, IGV, stock y anulación).
-- **Restricciones:** usar solo las reglas del enunciado; los montos con dos decimales.
-- **Formato esperado:** documento en Markdown con las 9 secciones de la plantilla.
-- **Qué hice con la respuesta:** la acepté; agregué dos casos de prueba propios (10 y 11) y revisé a mano los montos de los casos 4, 5 y 8.
+- **Contexto:** Laboratorio 11, Grupo B (Compras con SwiftUI + SwiftData). Ya tenía las clases, los roles y las reglas del enunciado.
+- **Tarea:** ordenar el expediente con la plantilla del anexo y comprobar los ejemplos numéricos (IGV, aprobación desde S/ 5,000 y costo promedio).
+- **Restricciones:** usar solo las reglas del enunciado y montos con dos decimales.
+- **Formato esperado:** un documento en Markdown con las secciones de la plantilla.
+- **Qué hice con la respuesta:** 
 
-## Consulta 2 · Modelo de datos y login
+## Consulta 2 · Clases y login
 
-- **Contexto:** proyecto UIKit con Core Data. 4 entidades (Usuario, Producto, Cliente, Venta) con delete rule Deny en las relaciones To Many.
-- **Tarea:** crear el modelo, la clase Sesion con un objeto compartido y las pantallas de login, registro y pestañas por rol.
-- **Restricciones:** interfaz por código (sin storyboard), usuario único con `==[c]`, mensaje genérico en el login.
+- **Contexto:** proyecto SwiftUI con SwiftData y 4 clases `@Model` (Usuario, Proveedor, Producto, Compra) con `.deny` en las relaciones To Many.
+- **Tarea:** crear las clases, la sesión `@Observable` con `.environment` y las pantallas de login, registro y pestañas por rol.
+- **Restricciones:** usuario único sin importar mayúsculas, `FetchDescriptor` con `#Predicate` y mensaje genérico en el login.
 - **Formato esperado:** archivos `.swift` completos.
 - **Qué hice con la respuesta:** 
 
-## Consulta 3 · Pantallas de productos, clientes y venta
+## Consulta 3 · Productos, proveedores y nueva compra
 
-- **Contexto:** ya funcionaban el login y las pestañas.
-- **Tarea:** armar A3, A4 y A5 según la maqueta: chips de categoría, colores de stock, categoría del cliente calculada y resumen de la venta.
-- **Restricciones:** la categoría no se guarda, se calcula con las ventas no anuladas; si la cantidad supera el stock no se registra.
-- **Formato esperado:** un archivo por pantalla.
+- **Contexto:** el login y las pestañas ya funcionaban.
+- **Tarea:** armar B3, B4 y B5 según la maqueta: valor del inventario, "por pagar" calculado por proveedor y el aviso de aprobación.
+- **Restricciones:** la compra desde S/ 5,000 queda Pendiente y no cambia el stock; al aprobar se usa el costo promedio ponderado.
+- **Formato esperado:** una vista por archivo.
 - **Qué hice con la respuesta:** 
 
-## Consulta 4 · Ventas, anulación y resumen
+## Consulta 4 · Aprobar, por pagar y resumen
 
-- **Contexto:** faltaban las pantallas que leen ventas.
-- **Tarea:** A6 con predicate por vendedor, A7 con filtro por vendedor (relación), A8 con motivo obligatorio y A9 con gráfico de 7 días y ranking.
-- **Restricciones:** usar NSPredicate con fechas y con la relación `vendedor`; el botón Anular desactivado si el motivo está vacío.
+- **Contexto:** faltaban las pantallas del supervisor.
+- **Tarea:** B7 con vista previa del efecto, B8 con filtros Pendientes, Vencidas y Pagadas con `#Predicate`, y B9 con el total por proveedor.
+- **Restricciones:** rechazar exige un motivo, Pagar solo para el supervisor y la búsqueda es por proveedor.
 - **Formato esperado:** archivos `.swift` completos.
 - **Qué hice con la respuesta:** 
