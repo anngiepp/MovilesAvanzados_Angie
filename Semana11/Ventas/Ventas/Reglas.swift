@@ -100,3 +100,18 @@ func ventasValidas(desde: Date, hasta: Date, vendedor: Usuario? = nil) -> [Venta
 func sumaTotal(_ ventas: [Venta]) -> Double {
     ventas.reduce(0) { $0 + $1.total }
 }
+
+// MARK: - Cierre de IGV del mes (con el grupo B)
+
+// IGV por pagar = IGV de ventas − crédito fiscal de compras
+// Si sale negativo es saldo a favor
+func cierreIGV(igvVentas: Double, creditoFiscal: Double) -> (monto: Double, saldoAFavor: Bool) {
+    let resultado = redondear(igvVentas - creditoFiscal)
+    return (abs(resultado), resultado < 0)
+}
+
+// El crédito fiscal lo trae el grupo B; se guarda para no escribirlo cada vez
+var creditoFiscalGuardado: Double {
+    get { UserDefaults.standard.double(forKey: "creditoFiscal") }
+    set { UserDefaults.standard.set(newValue, forKey: "creditoFiscal") }
+}
