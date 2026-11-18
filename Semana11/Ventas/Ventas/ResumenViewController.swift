@@ -28,6 +28,7 @@ class ResumenViewController: UIViewController {
         stack.addArrangedSubview(grafico())
         stack.addArrangedSubview(ranking())
         stack.addArrangedSubview(stockBajo())
+        stack.addArrangedSubview(cierre())
     }
 
     func saludo() -> UIView {
@@ -163,6 +164,68 @@ class ResumenViewController: UIViewController {
         let tarjeta = Tarjeta()
         tarjeta.agregar(contenido)
         return tarjeta
+    }
+}
+
+extension ResumenViewController {
+
+    // Cierre de IGV del mes: IGV de ventas − crédito fiscal (dato del grupo B)
+    func cierre() -> UIView {
+        let manana = Calendar.current.date(byAdding: .day, value: 1, to: inicioDelDia())!
+        let igvVentas = ventasValidas(desde: inicioDelMes(), hasta: manana).reduce(0) { $0 + $1.igv }
+        let credito = creditoFiscalGuardado
+        let resultado = cierreIGV(igvVentas: igvVentas, creditoFiscal: credito)
+
+        let contenido = UIStackView(arrangedSubviews: [crearLabel("Cierre de IGV del mes", tamano: 14, color: .secondaryLabel)])
+        contenido.axis = .vertical
+        contenido.spacing = 8
+        contenido.addArrangedSubview(filaCierre("IGV de ventas", soles(igvVentas)))
+        contenido.addArrangedSubview(filaCierre("Crédito fiscal (compras, grupo B)", "− " + soles(credito)))
+
+        let titulo = resultado.saldoAFavor ? "Saldo a favor" : "IGV por pagar"
+        let filaTotal = filaCierre(titulo, soles(resultado.monto), negrita: true)
+        contenido.addArrangedSubview(filaTotal)
+
+        let btnCredito = UIButton(type: .system)
+        btnCredito.setTitle(credito == 0 ? "Ingresar crédito fiscal" : "Cambiar crédito fiscal", for: .normal)
+        btnCredito.contentHorizontalAlignment = .leading
+        btnCredito.addTarget(self, action: #selector(pedirCredito), for: .touchUpInside)
+        contenido.addArrangedSubview(btnCredito)
+
+        let tarjeta = Tarjeta()
+        tarjeta.agregar(contenido)
+        return tarjeta
+    }
+
+    func filaCierre(_ texto: String, _ valor: String, negrita: Bool = false) -> UIView {
+        let peso: UIFont.Weight = negrita ? .bold : .regular
+        let lblTexto = crearLabel(texto, tamano: 15, peso: peso)
+        let lblValor = crearLabel(valor, tamano: 15, peso: peso)
+        lblValor.textAlignment = .right
+        lblValor.setContentHuggingPriority(.required, for: .horizontal)
+        let fila = UIStackView(arrangedSubviews: [lblTexto, lblValor])
+        fila.spacing = 8
+        return fila
+    }
+
+    @objc func pedirCredito() {
+        let ventana = UIAlertController(title: "Crédito fiscal del mes", message: "Escribe el IGV de compras que trae el grupo B.", preferredStyle: .alert)
+        ventana.addTextField { campo in
+            campo.placeholder = "Ej. 2361.60"
+            campo.keyboardType = .decimalPad
+            if creditoFiscalGuardado > 0 { campo.text = String(format: "%.2f", creditoFiscalGuardado) }
+        }
+        ventana.addAction(UIAlertAction(title: "Cancelar", style: .cancel))
+        ventana.addAction(UIAlertAction(title: "Calcular", style: .default) { _ in
+            let texto = (ventana.textFields?.first?.text ?? "").replacingOccurrences(of: ",", with: ".")
+            guard let valor = Double(texto), valor >= 0 else {
+                self.alerta("Monto inválido", "Escribe un número, por ejemplo 2361.60")
+                return
+            }
+            creditoFiscalGuardado = valor
+            self.armarPanel()
+        })
+        present(ventana, animated: true)
     }
 }
 
