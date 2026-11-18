@@ -2,38 +2,61 @@ import UIKit
 import CoreData
 
 // A1 · Login
+// Cabecera café con el logo y una tarjeta con el formulario encima
 class LoginViewController: UIViewController {
 
     let txtUsuario = UITextField()
     let txtClave = UITextField()
-    let lblError = crearLabel("⚠︎ Usuario o clave incorrectos", tamano: 14, color: .systemRed)
+    let lblError = crearLabel("⚠︎ Usuario o clave incorrectos", tamano: 14, peso: .medium, color: Paleta.rojo)
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGroupedBackground
+        view.backgroundColor = Paleta.fondo
         navigationItem.backButtonTitle = "Ingresar"
 
-        let logo = UIImageView(image: UIImage(systemName: "cart.fill"))
-        logo.tintColor = .white
+        // Fondo café arriba con las esquinas de abajo redondeadas
+        let cabecera = UIView()
+        cabecera.backgroundColor = Paleta.cafe
+        cabecera.layer.cornerRadius = 40
+        cabecera.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        cabecera.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(cabecera)
+        NSLayoutConstraint.activate([
+            cabecera.topAnchor.constraint(equalTo: view.topAnchor),
+            cabecera.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            cabecera.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            cabecera.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.42)
+        ])
+
+        let logo = UIImageView(image: UIImage(systemName: "bag.fill"))
+        logo.tintColor = Paleta.cafe
         logo.contentMode = .scaleAspectFit
         let fondoLogo = UIView()
-        fondoLogo.backgroundColor = .systemBlue
-        fondoLogo.layer.cornerRadius = 22
+        fondoLogo.backgroundColor = Paleta.menta
+        fondoLogo.layer.cornerRadius = 40
         logo.translatesAutoresizingMaskIntoConstraints = false
         fondoLogo.translatesAutoresizingMaskIntoConstraints = false
         fondoLogo.addSubview(logo)
         NSLayoutConstraint.activate([
-            fondoLogo.widthAnchor.constraint(equalToConstant: 90),
-            fondoLogo.heightAnchor.constraint(equalToConstant: 90),
+            fondoLogo.widthAnchor.constraint(equalToConstant: 80),
+            fondoLogo.heightAnchor.constraint(equalToConstant: 80),
             logo.centerXAnchor.constraint(equalTo: fondoLogo.centerXAnchor),
             logo.centerYAnchor.constraint(equalTo: fondoLogo.centerYAnchor),
-            logo.widthAnchor.constraint(equalToConstant: 48),
-            logo.heightAnchor.constraint(equalToConstant: 48)
+            logo.widthAnchor.constraint(equalToConstant: 38),
+            logo.heightAnchor.constraint(equalToConstant: 38)
         ])
 
-        let lblTitulo = crearLabel("Ventas Tecsup", tamano: 28, peso: .bold)
-        let lblSub = crearLabel("Inicia sesión para continuar", tamano: 15, color: .secondaryLabel)
+        let lblTitulo = crearLabel("Ventas Tecsup", tamano: 30, peso: .heavy, color: Paleta.fondo)
+        let lblSub = crearLabel("Hola de nuevo, inicia sesión para continuar", tamano: 15, color: Paleta.menta)
+        lblSub.textAlignment = .center
 
+        let marca = UIStackView(arrangedSubviews: [fondoLogo, lblTitulo, lblSub])
+        marca.axis = .vertical
+        marca.alignment = .center
+        marca.spacing = 8
+        marca.setCustomSpacing(16, after: fondoLogo)
+
+        // Formulario dentro de una tarjeta
         txtUsuario.placeholder = "Tu usuario"
         txtClave.placeholder = "Tu clave"
         txtClave.isSecureTextEntry = true
@@ -42,29 +65,37 @@ class LoginViewController: UIViewController {
         let btnIngresar = botonPrincipal("Ingresar")
         btnIngresar.addTarget(self, action: #selector(ingresar), for: .touchUpInside)
 
+        let lblForm = crearLabel("Iniciar sesión", tamano: 20, peso: .bold)
+        let formulario = UIStackView(arrangedSubviews: [lblForm, cajaCampo("USUARIO", txtUsuario), cajaCampo("CLAVE", txtClave), lblError, btnIngresar])
+        formulario.axis = .vertical
+        formulario.spacing = 12
+        formulario.setCustomSpacing(18, after: lblError)
+        let tarjeta = Tarjeta()
+        tarjeta.agregar(formulario, margen: 18)
+        for caja in formulario.arrangedSubviews where caja is Tarjeta {
+            caja.backgroundColor = Paleta.fondo
+            caja.layer.shadowOpacity = 0
+        }
+
         let btnCrear = UIButton(type: .system)
-        let texto = NSMutableAttributedString(string: "¿Primera vez? ", attributes: [.foregroundColor: UIColor.secondaryLabel])
-        texto.append(NSAttributedString(string: "Crear cuenta", attributes: [.font: UIFont.systemFont(ofSize: 15, weight: .semibold)]))
+        let texto = NSMutableAttributedString(string: "¿Primera vez? ", attributes: [.foregroundColor: Paleta.textoSuave])
+        texto.append(NSAttributedString(string: "Crear cuenta", attributes: [.foregroundColor: Paleta.mentaFuerte, .font: UIFont.systemFont(ofSize: 15, weight: .bold)]))
         btnCrear.setAttributedTitle(texto, for: .normal)
         btnCrear.addTarget(self, action: #selector(irARegistro), for: .touchUpInside)
 
-        let cabecera = UIStackView(arrangedSubviews: [fondoLogo, lblTitulo, lblSub])
-        cabecera.axis = .vertical
-        cabecera.alignment = .center
-        cabecera.spacing = 10
-        cabecera.setCustomSpacing(20, after: fondoLogo)
-
-        let stack = UIStackView(arrangedSubviews: [cabecera, cajaCampo("USUARIO", txtUsuario), cajaCampo("CLAVE", txtClave), lblError, btnIngresar, btnCrear])
+        let stack = UIStackView(arrangedSubviews: [marca, tarjeta, btnCrear])
         stack.axis = .vertical
-        stack.spacing = 14
-        stack.setCustomSpacing(32, after: cabecera)
-        montarEnScroll(stack, arriba: 60)
+        stack.spacing = 28
+        stack.setCustomSpacing(18, after: tarjeta)
+        montarEnScroll(stack, arriba: 36)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
 
     @objc func ingresar() {
         let usuario = txtUsuario.text?.trimmingCharacters(in: .whitespaces) ?? ""

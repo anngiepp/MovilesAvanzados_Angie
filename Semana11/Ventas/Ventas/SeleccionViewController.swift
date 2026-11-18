@@ -24,7 +24,7 @@ class SeleccionViewController: UITableViewController {
         let celda = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
         celda.textLabel?.text = opciones[indexPath.row]
         celda.detailTextLabel?.text = detalles[indexPath.row]
-        celda.detailTextLabel?.textColor = .secondaryLabel
+        celda.detailTextLabel?.textColor = Paleta.textoSuave
         return celda
     }
 

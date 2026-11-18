@@ -13,7 +13,7 @@ class RegistroViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGroupedBackground
+        view.backgroundColor = Paleta.fondo
         navigationItem.title = "Crear cuenta"
 
         txtNombre.placeholder = "Ej. Lucía Paredes"
@@ -26,15 +26,18 @@ class RegistroViewController: UIViewController {
         txtConfirmar.isSecureTextEntry = true
         segRol.selectedSegmentIndex = 0
 
-        let lblRol = crearLabel("TU ROL", tamano: 12, peso: .medium, color: .secondaryLabel)
+        let lblRol = crearLabel("TU ROL", tamano: 12, peso: .medium, color: Paleta.textoSuave)
         let btnRegistrar = botonPrincipal("Registrarme")
         btnRegistrar.addTarget(self, action: #selector(registrar), for: .touchUpInside)
-        let lblNota = crearLabel("Al registrarte entrarás directamente a la app con las pestañas de tu rol.", tamano: 13, color: .secondaryLabel)
+        let lblNota = crearLabel("Al registrarte entrarás directamente a la app con las pestañas de tu rol.", tamano: 13, color: Paleta.textoSuave)
         lblNota.textAlignment = .center
 
+        let banner = BannerView(icono: "person.badge.plus")
+        banner.lblTitulo.text = "Únete al equipo"
+        banner.lblDetalle.text = "Elige tu rol: vendedor o supervisor"
         let cajaNombre = cajaCampo("NOMBRE COMPLETO", txtNombre)
         let cajaUsuario = cajaCampo("USUARIO", txtUsuario, extra: lblDisponible)
-        let stack = UIStackView(arrangedSubviews: [cajaNombre, cajaUsuario, cajaCampo("CLAVE (MÍNIMO 6 CARACTERES)", txtClave), cajaCampo("CONFIRMAR CLAVE", txtConfirmar), lblRol, segRol, btnRegistrar, lblNota])
+        let stack = UIStackView(arrangedSubviews: [banner, cajaNombre, cajaUsuario, cajaCampo("CLAVE (MÍNIMO 6 CARACTERES)", txtClave), cajaCampo("CONFIRMAR CLAVE", txtConfirmar), lblRol, segRol, btnRegistrar, lblNota])
         stack.axis = .vertical
         stack.spacing = 14
         stack.setCustomSpacing(6, after: lblRol)
@@ -60,10 +63,10 @@ class RegistroViewController: UIViewController {
             lblDisponible.text = ""
         } else if usuarioExiste(texto) {
             lblDisponible.text = "✕ Ya existe"
-            lblDisponible.textColor = .systemRed
+            lblDisponible.textColor = Paleta.rojo
         } else {
             lblDisponible.text = "✓ Disponible"
-            lblDisponible.textColor = .systemGreen
+            lblDisponible.textColor = Paleta.mentaFuerte
         }
     }
 

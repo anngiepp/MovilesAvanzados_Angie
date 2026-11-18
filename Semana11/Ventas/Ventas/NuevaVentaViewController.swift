@@ -48,12 +48,13 @@ class NuevaVentaViewController: UITableViewController {
         let usuario = Sesion.shared.usuario
         let contenedor = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 84))
         let tarjeta = Tarjeta()
-        tarjeta.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.1)
+        tarjeta.backgroundColor = Paleta.menta
+        tarjeta.layer.borderWidth = 0
 
         let avatar = AvatarView(tamano: 40)
-        avatar.poner(iniciales(usuario?.nombre), .systemBlue)
-        let lblNombre = crearLabel("\(usuario?.nombre ?? "") · \(usuario?.rol ?? "")", tamano: 15, peso: .semibold, color: .systemBlue)
-        let lblNota = crearLabel("Sesión iniciada · la venta se registra a tu nombre", tamano: 12, color: .systemBlue)
+        avatar.poner(iniciales(usuario?.nombre), Paleta.tarjeta)
+        let lblNombre = crearLabel("\(usuario?.nombre ?? "") · \(usuario?.rol ?? "")", tamano: 15, peso: .bold)
+        let lblNota = crearLabel("Sesión iniciada · la venta se registra a tu nombre", tamano: 12, color: Paleta.cafe)
         let textos = UIStackView(arrangedSubviews: [lblNombre, lblNota])
         textos.axis = .vertical
         textos.spacing = 2
@@ -104,7 +105,7 @@ class NuevaVentaViewController: UITableViewController {
         if recargarCantidad { txtCantidad.text = "\(cantidad)" }
         let stock = producto.map { "  (stock \($0.stock))" } ?? ""
         let texto = NSMutableAttributedString(string: "Cantidad")
-        texto.append(NSAttributedString(string: stock, attributes: [.font: UIFont.systemFont(ofSize: 13), .foregroundColor: UIColor.secondaryLabel]))
+        texto.append(NSAttributedString(string: stock, attributes: [.font: UIFont.systemFont(ofSize: 13), .foregroundColor: Paleta.textoSuave]))
         celdaCantidad.textLabel?.attributedText = texto
         if recargarCantidad {
             tableView.reloadData()
@@ -166,10 +167,11 @@ class NuevaVentaViewController: UITableViewController {
             celda.detailTextLabel?.text = soles(calculo.igv)
         default:
             celda.textLabel?.text = "Total"
+            celda.backgroundColor = Paleta.menta
             celda.textLabel?.font = .systemFont(ofSize: 17, weight: .bold)
             celda.detailTextLabel?.text = soles(calculo.total)
             celda.detailTextLabel?.font = .systemFont(ofSize: 17, weight: .bold)
-            celda.detailTextLabel?.textColor = .label
+            celda.detailTextLabel?.textColor = Paleta.cafe
         }
         return celda
     }

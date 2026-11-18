@@ -1,5 +1,34 @@
 import UIKit
 
+// MARK: - Paleta (pasteles: crema, café y verde menta)
+
+extension UIColor {
+    convenience init(hex: UInt32) {
+        let r = CGFloat((hex >> 16) & 0xFF) / 255
+        let g = CGFloat((hex >> 8) & 0xFF) / 255
+        let b = CGFloat(hex & 0xFF) / 255
+        self.init(red: r, green: g, blue: b, alpha: 1)
+    }
+}
+
+enum Paleta {
+    static let fondo = UIColor(hex: 0xF7F1EA)        // crema
+    static let tarjeta = UIColor(hex: 0xFFFCF8)      // blanco cálido
+    static let borde = UIColor(hex: 0xE8DCCF)
+    static let cafe = UIColor(hex: 0x8B6B52)         // marrón principal
+    static let cafeOscuro = UIColor(hex: 0x4A3728)   // textos
+    static let latte = UIColor(hex: 0xD9C2A7)
+    static let menta = UIColor(hex: 0xBFE6D5)        // menta pastel
+    static let mentaFuerte = UIColor(hex: 0x5FAE93)
+    static let durazno = UIColor(hex: 0xF5CDB4)
+    static let salvia = UIColor(hex: 0xCFE0BE)
+    static let rosa = UIColor(hex: 0xEDC9C6)
+    static let ambar = UIColor(hex: 0xE3A857)
+    static let rojo = UIColor(hex: 0xD9776F)
+    static let texto = UIColor(hex: 0x4A3728)
+    static let textoSuave = UIColor(hex: 0x9C8573)
+}
+
 // MARK: - Funciones de ayuda
 
 func iniciales(_ texto: String?) -> String {
@@ -8,26 +37,26 @@ func iniciales(_ texto: String?) -> String {
 }
 
 func colorPara(_ texto: String?) -> UIColor {
-    let colores: [UIColor] = [.systemBlue, .systemPurple, .systemTeal, .systemPink, .systemIndigo, .systemOrange, .systemGreen]
+    let colores: [UIColor] = [Paleta.menta, Paleta.durazno, Paleta.latte, Paleta.salvia, Paleta.rosa]
     let suma = (texto ?? "").unicodeScalars.reduce(0) { $0 + Int($1.value) }
     return colores[suma % colores.count]
 }
 
 func colorStock(_ stock: Int64) -> UIColor {
-    if stock > 10 { return .systemGreen }
-    if stock >= 6 { return .systemOrange }
-    return .systemRed
+    if stock > 10 { return Paleta.mentaFuerte }
+    if stock >= 6 { return Paleta.ambar }
+    return Paleta.rojo
 }
 
 func colorCategoria(_ categoria: String) -> UIColor {
     switch categoria {
-    case "VIP": return .systemPurple
-    case "Frecuente": return .systemBlue
-    default: return .systemGray
+    case "VIP": return Paleta.cafe
+    case "Frecuente": return Paleta.mentaFuerte
+    default: return Paleta.textoSuave
     }
 }
 
-func crearLabel(_ texto: String = "", tamano: CGFloat = 15, peso: UIFont.Weight = .regular, color: UIColor = .label) -> UILabel {
+func crearLabel(_ texto: String = "", tamano: CGFloat = 15, peso: UIFont.Weight = .regular, color: UIColor = Paleta.texto) -> UILabel {
     let label = UILabel()
     label.text = texto
     label.font = .systemFont(ofSize: tamano, weight: peso)
@@ -36,11 +65,12 @@ func crearLabel(_ texto: String = "", tamano: CGFloat = 15, peso: UIFont.Weight 
     return label
 }
 
-func botonPrincipal(_ titulo: String, color: UIColor = .systemBlue) -> UIButton {
+func botonPrincipal(_ titulo: String, color: UIColor = Paleta.cafe) -> UIButton {
     var config = UIButton.Configuration.filled()
     config.title = titulo
     config.baseBackgroundColor = color
-    config.cornerStyle = .large
+    config.baseForegroundColor = Paleta.fondo
+    config.cornerStyle = .capsule
     config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { atributos in
         var nuevo = atributos
         nuevo.font = .systemFont(ofSize: 17, weight: .semibold)
@@ -54,8 +84,10 @@ func botonPrincipal(_ titulo: String, color: UIColor = .systemBlue) -> UIButton 
 // Caja blanca con un título pequeño arriba y el campo de texto abajo
 func cajaCampo(_ titulo: String, _ campo: UITextField, extra: UIView? = nil) -> UIView {
     let caja = Tarjeta()
-    let lblTitulo = crearLabel(titulo, tamano: 11, peso: .medium, color: .secondaryLabel)
+    let lblTitulo = crearLabel(titulo, tamano: 11, peso: .medium, color: Paleta.textoSuave)
     campo.font = .systemFont(ofSize: 17)
+    campo.textColor = Paleta.texto
+    campo.tintColor = Paleta.cafe
     campo.autocapitalizationType = .none
     campo.autocorrectionType = .no
 
@@ -78,8 +110,14 @@ func cajaCampo(_ titulo: String, _ campo: UITextField, extra: UIView? = nil) -> 
 class Tarjeta: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .secondarySystemGroupedBackground
-        layer.cornerRadius = 14
+        backgroundColor = Paleta.tarjeta
+        layer.cornerRadius = 18
+        layer.borderWidth = 1
+        layer.borderColor = Paleta.borde.cgColor
+        layer.shadowColor = Paleta.cafe.cgColor
+        layer.shadowOpacity = 0.08
+        layer.shadowRadius = 8
+        layer.shadowOffset = CGSize(width: 0, height: 3)
     }
 
     required init?(coder: NSCoder) { fatalError() }
@@ -130,7 +168,7 @@ class AvatarView: UILabel {
         font = .systemFont(ofSize: tamano * 0.38, weight: .bold)
         textColor = .white
         textAlignment = .center
-        layer.cornerRadius = tamano * 0.25
+        layer.cornerRadius = tamano / 2
         layer.masksToBounds = true
         translatesAutoresizingMaskIntoConstraints = false
         widthAnchor.constraint(equalToConstant: tamano).isActive = true
@@ -139,7 +177,7 @@ class AvatarView: UILabel {
 
     required init?(coder: NSCoder) { fatalError() }
 
-    func poner(_ texto: String, _ color: UIColor, colorTexto: UIColor = .white) {
+    func poner(_ texto: String, _ color: UIColor, colorTexto: UIColor = Paleta.cafeOscuro) {
         text = texto
         backgroundColor = color
         textColor = colorTexto
@@ -200,12 +238,12 @@ class ChipsView: UIScrollView {
             config.cornerStyle = .capsule
             config.contentInsets = NSDirectionalEdgeInsets(top: 6, leading: 14, bottom: 6, trailing: 14)
             if activo {
-                config.baseBackgroundColor = .systemBlue
+                config.baseBackgroundColor = Paleta.mentaFuerte
                 config.baseForegroundColor = .white
             } else {
-                config.baseForegroundColor = .label
-                config.background.backgroundColor = .secondarySystemGroupedBackground
-                config.background.strokeColor = .systemGray4
+                config.baseForegroundColor = Paleta.cafe
+                config.background.backgroundColor = Paleta.tarjeta
+                config.background.strokeColor = Paleta.borde
                 config.background.strokeWidth = 1
             }
             config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { atributos in
@@ -223,13 +261,14 @@ class ChipsView: UIScrollView {
 class FilaCell: UITableViewCell {
     let avatar = AvatarView(tamano: 40)
     let lblTitulo = crearLabel(tamano: 16, peso: .semibold)
-    let lblSubtitulo = crearLabel(tamano: 13, color: .secondaryLabel)
+    let lblSubtitulo = crearLabel(tamano: 13, color: Paleta.textoSuave)
     let lblValor = crearLabel(tamano: 15, peso: .bold)
-    let lblDetalle = crearLabel(tamano: 11, color: .secondaryLabel)
+    let lblDetalle = crearLabel(tamano: 11, color: Paleta.textoSuave)
     let etiqueta = EtiquetaView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = Paleta.tarjeta
         lblTitulo.numberOfLines = 1
         lblSubtitulo.numberOfLines = 1
         lblValor.textAlignment = .right
@@ -261,16 +300,16 @@ class FilaCell: UITableViewCell {
 
     required init?(coder: NSCoder) { fatalError() }
 
-    func configurar(titulo: String?, subtitulo: String?, valor: String?, detalle: String? = nil, etiqueta texto: String? = nil, colorEtiqueta: UIColor = .systemGray, tachado: Bool = false) {
+    func configurar(titulo: String?, subtitulo: String?, valor: String?, detalle: String? = nil, etiqueta texto: String? = nil, colorEtiqueta: UIColor = Paleta.textoSuave, tachado: Bool = false) {
         if tachado {
             lblTitulo.attributedText = NSAttributedString(string: titulo ?? "", attributes: [.strikethroughStyle: NSUnderlineStyle.single.rawValue])
-            lblTitulo.textColor = .secondaryLabel
-            lblValor.textColor = .secondaryLabel
+            lblTitulo.textColor = Paleta.textoSuave
+            lblValor.textColor = Paleta.textoSuave
         } else {
             lblTitulo.attributedText = nil
             lblTitulo.text = titulo
-            lblTitulo.textColor = .label
-            lblValor.textColor = .label
+            lblTitulo.textColor = Paleta.texto
+            lblValor.textColor = Paleta.cafe
         }
         lblSubtitulo.text = subtitulo
         lblValor.text = valor
@@ -317,7 +356,7 @@ extension UIViewController {
     // Texto gris pequeño que va debajo de una tabla
     func notaPie(_ texto: String) -> UIView {
         let contenedor = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 50))
-        let label = crearLabel(texto, tamano: 13, color: .secondaryLabel)
+        let label = crearLabel(texto, tamano: 13, color: Paleta.textoSuave)
         label.frame = contenedor.bounds.insetBy(dx: 20, dy: 4)
         label.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         contenedor.addSubview(label)
@@ -326,17 +365,20 @@ extension UIViewController {
 }
 
 // Tarjeta con título pequeño, valor grande y detalle (Hoy, Mes, Vendido hoy...)
-func tarjetaIndicador(_ titulo: String) -> (tarjeta: Tarjeta, valor: UILabel, detalle: UILabel) {
-    let lblTitulo = crearLabel(titulo, tamano: 13, color: .secondaryLabel)
-    let lblValor = crearLabel("S/ 0.00", tamano: 24, peso: .bold)
+func tarjetaIndicador(_ titulo: String, fondo: UIColor = Paleta.tarjeta, oscura: Bool = false) -> (tarjeta: Tarjeta, valor: UILabel, detalle: UILabel) {
+    let colorTexto = oscura ? Paleta.fondo : Paleta.texto
+    let lblTitulo = crearLabel(titulo.uppercased(), tamano: 11, peso: .semibold, color: oscura ? Paleta.menta : Paleta.textoSuave)
+    let lblValor = crearLabel("S/ 0.00", tamano: 24, peso: .bold, color: colorTexto)
     lblValor.adjustsFontSizeToFitWidth = true
     lblValor.minimumScaleFactor = 0.6
     lblValor.numberOfLines = 1
-    let lblDetalle = crearLabel("", tamano: 12, color: .secondaryLabel)
+    let lblDetalle = crearLabel("", tamano: 12, color: oscura ? Paleta.latte : Paleta.textoSuave)
     let stack = UIStackView(arrangedSubviews: [lblTitulo, lblValor, lblDetalle])
     stack.axis = .vertical
     stack.spacing = 4
     let tarjeta = Tarjeta()
+    tarjeta.backgroundColor = fondo
+    if fondo != Paleta.tarjeta { tarjeta.layer.borderWidth = 0 }
     tarjeta.agregar(stack, margen: 14)
     return (tarjeta, lblValor, lblDetalle)
 }
@@ -350,11 +392,11 @@ extension FilaCell {
             : "\(textoFecha(venta.fecha)) · \(detalle)"
 
         if conVendedor {
-            avatar.poner(iniciales(venta.cliente?.nombre), venta.anulada ? .systemGray3 : colorPara(venta.cliente?.nombre))
+            avatar.poner(iniciales(venta.cliente?.nombre), venta.anulada ? Paleta.borde : colorPara(venta.cliente?.nombre))
         } else if venta.anulada {
-            avatar.poner("✕", UIColor.systemRed.withAlphaComponent(0.2), colorTexto: .systemRed)
+            avatar.poner("✕", Paleta.rosa, colorTexto: Paleta.rojo)
         } else {
-            avatar.poner("✓", .systemGreen)
+            avatar.poner("✓", Paleta.menta, colorTexto: Paleta.mentaFuerte)
         }
 
         configurar(titulo: venta.cliente?.nombre,
@@ -362,8 +404,103 @@ extension FilaCell {
                    valor: soles(venta.total),
                    detalle: venta.anulada ? venta.motivoAnulacion : nil,
                    etiqueta: venta.anulada ? "Anulada" : nil,
-                   colorEtiqueta: .systemRed,
+                   colorEtiqueta: Paleta.rojo,
                    tachado: venta.anulada)
         selectionStyle = .none
     }
+}
+
+
+// Banner de color con ícono y dos líneas (va arriba de las listas)
+class BannerView: Tarjeta {
+    let lblTitulo = crearLabel(tamano: 17, peso: .bold)
+    let lblDetalle = crearLabel(tamano: 13, color: Paleta.cafe)
+
+    init(icono: String, fondo: UIColor = Paleta.menta) {
+        super.init(frame: .zero)
+        backgroundColor = fondo
+        layer.borderWidth = 0
+
+        let imagen = UIImageView(image: UIImage(systemName: icono))
+        imagen.tintColor = Paleta.cafe
+        imagen.contentMode = .scaleAspectFit
+        let circulo = UIView()
+        circulo.backgroundColor = Paleta.tarjeta.withAlphaComponent(0.7)
+        circulo.layer.cornerRadius = 22
+        imagen.translatesAutoresizingMaskIntoConstraints = false
+        circulo.translatesAutoresizingMaskIntoConstraints = false
+        circulo.addSubview(imagen)
+        NSLayoutConstraint.activate([
+            circulo.widthAnchor.constraint(equalToConstant: 44),
+            circulo.heightAnchor.constraint(equalToConstant: 44),
+            imagen.centerXAnchor.constraint(equalTo: circulo.centerXAnchor),
+            imagen.centerYAnchor.constraint(equalTo: circulo.centerYAnchor),
+            imagen.widthAnchor.constraint(equalToConstant: 22),
+            imagen.heightAnchor.constraint(equalToConstant: 22)
+        ])
+
+        let textos = UIStackView(arrangedSubviews: [lblTitulo, lblDetalle])
+        textos.axis = .vertical
+        textos.spacing = 2
+        let fila = UIStackView(arrangedSubviews: [circulo, textos])
+        fila.spacing = 12
+        fila.alignment = .center
+        agregar(fila, margen: 14)
+    }
+
+    required init?(coder: NSCoder) { fatalError() }
+}
+
+// Cabecera de lista: banner arriba y (opcional) chips abajo, con tamaño fijo
+func cabeceraLista(banner: BannerView, chips: ChipsView?, ancho: CGFloat) -> UIView {
+    let alto: CGFloat = chips == nil ? 92 : 140
+    let contenedor = UIView(frame: CGRect(x: 0, y: 0, width: ancho, height: alto))
+    banner.frame = CGRect(x: 20, y: 8, width: ancho - 40, height: 72)
+    banner.autoresizingMask = [.flexibleWidth]
+    contenedor.addSubview(banner)
+    if let chips = chips {
+        chips.frame = CGRect(x: 0, y: 92, width: ancho, height: 36)
+        chips.autoresizingMask = [.flexibleWidth]
+        contenedor.addSubview(chips)
+    }
+    return contenedor
+}
+
+// Colores generales de la app: barras, pestañas y modo claro
+func aplicarApariencia(_ window: UIWindow) {
+    window.overrideUserInterfaceStyle = .light
+    window.tintColor = Paleta.cafe
+
+    let barra = UINavigationBarAppearance()
+    barra.configureWithOpaqueBackground()
+    barra.backgroundColor = Paleta.fondo
+    barra.shadowColor = .clear
+    barra.titleTextAttributes = [.foregroundColor: Paleta.cafeOscuro]
+    barra.largeTitleTextAttributes = [.foregroundColor: Paleta.cafeOscuro, .font: UIFont.systemFont(ofSize: 32, weight: .heavy)]
+    UINavigationBar.appearance().standardAppearance = barra
+    UINavigationBar.appearance().scrollEdgeAppearance = barra
+    UINavigationBar.appearance().compactAppearance = barra
+
+    let pestanas = UITabBarAppearance()
+    pestanas.configureWithOpaqueBackground()
+    pestanas.backgroundColor = Paleta.tarjeta
+    pestanas.shadowColor = Paleta.borde
+    for item in [pestanas.stackedLayoutAppearance, pestanas.inlineLayoutAppearance, pestanas.compactInlineLayoutAppearance] {
+        item.selected.iconColor = Paleta.cafe
+        item.selected.titleTextAttributes = [.foregroundColor: Paleta.cafe]
+        item.normal.iconColor = Paleta.latte
+        item.normal.titleTextAttributes = [.foregroundColor: Paleta.textoSuave]
+    }
+    UITabBar.appearance().standardAppearance = pestanas
+    UITabBar.appearance().scrollEdgeAppearance = pestanas
+
+    UISegmentedControl.appearance().selectedSegmentTintColor = Paleta.menta
+    UISegmentedControl.appearance().backgroundColor = Paleta.borde.withAlphaComponent(0.6)
+    UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: Paleta.cafeOscuro], for: .selected)
+    UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: Paleta.cafe], for: .normal)
+
+    UITableView.appearance().backgroundColor = Paleta.fondo
+    UITableViewCell.appearance().backgroundColor = Paleta.tarjeta
+    UIProgressView.appearance().progressTintColor = Paleta.mentaFuerte
+    UIProgressView.appearance().trackTintColor = Paleta.borde
 }

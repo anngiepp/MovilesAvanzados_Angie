@@ -7,6 +7,7 @@ class ClientesViewController: UITableViewController, UISearchResultsUpdating {
 
     var clientes: [Cliente] = []
     let buscador = UISearchController(searchResultsController: nil)
+    let banner = BannerView(icono: "person.2.fill", fondo: Paleta.durazno)
 
     init() {
         super.init(style: .insetGrouped)
@@ -25,6 +26,7 @@ class ClientesViewController: UITableViewController, UISearchResultsUpdating {
         navigationItem.searchController = buscador
         navigationItem.hidesSearchBarWhenScrolling = false
 
+        tableView.tableHeaderView = cabeceraLista(banner: banner, chips: nil, ancho: view.bounds.width)
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(agregar))
         tableView.tableFooterView = notaPie("Categoría y \"comprado\" se calculan con las ventas no anuladas; no se guardan.")
     }
@@ -42,6 +44,10 @@ class ClientesViewController: UITableViewController, UISearchResultsUpdating {
         }
         req.sortDescriptors = [NSSortDescriptor(key: "nombre", ascending: true)]
         clientes = (try? BD.contexto.fetch(req)) ?? []
+        let vip = clientes.filter { categoria(de: $0) == "VIP" }.count
+        let frecuentes = clientes.filter { categoria(de: $0) == "Frecuente" }.count
+        banner.lblTitulo.text = "\(clientes.count) clientes"
+        banner.lblDetalle.text = "\(vip) VIP · \(frecuentes) frecuentes"
         tableView.reloadData()
     }
 
@@ -76,6 +82,7 @@ class ClientesViewController: UITableViewController, UISearchResultsUpdating {
             self.borrar(self.clientes[indexPath.row])
             listo(true)
         }
+        borrar.backgroundColor = Paleta.rojo
         return UISwipeActionsConfiguration(actions: [borrar])
     }
 

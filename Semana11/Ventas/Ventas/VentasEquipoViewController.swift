@@ -13,7 +13,7 @@ class VentasEquipoViewController: UIViewController, UITableViewDataSource, UITab
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGroupedBackground
+        view.backgroundColor = Paleta.fondo
         navigationItem.title = "Ventas del equipo"
         let usuario = Sesion.shared.usuario
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: iniciales(usuario?.nombre), style: .plain, target: nil, action: nil)
@@ -120,6 +120,7 @@ class VentasEquipoViewController: UIViewController, UITableViewDataSource, UITab
             }
             listo(true)
         }
+        anular.backgroundColor = Paleta.rojo
         return UISwipeActionsConfiguration(actions: [anular])
     }
 }

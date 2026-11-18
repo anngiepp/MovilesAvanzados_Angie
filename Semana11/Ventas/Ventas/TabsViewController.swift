@@ -27,6 +27,7 @@ class TabsViewController: UITabBarController {
 
     func pestana(_ vc: UIViewController, _ titulo: String, _ icono: String) -> UINavigationController {
         let nav = UINavigationController(rootViewController: vc)
+        nav.navigationBar.prefersLargeTitles = true
         nav.tabBarItem = UITabBarItem(title: titulo, image: UIImage(systemName: icono), tag: 0)
         return nav
     }

@@ -5,17 +5,17 @@ class CuentaViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGroupedBackground
+        view.backgroundColor = Paleta.fondo
         navigationItem.title = "Cuenta"
 
         let usuario = Sesion.shared.usuario
         let avatar = AvatarView(tamano: 80)
-        avatar.poner(iniciales(usuario?.nombre), colorPara(usuario?.nombre))
+        avatar.poner(iniciales(usuario?.nombre), Paleta.menta)
 
         let lblNombre = crearLabel(usuario?.nombre ?? "", tamano: 22, peso: .bold)
-        let lblUsuario = crearLabel("@" + (usuario?.usuario ?? ""), tamano: 15, color: .secondaryLabel)
+        let lblUsuario = crearLabel("@" + (usuario?.usuario ?? ""), tamano: 15, color: Paleta.textoSuave)
         let etiquetaRol = EtiquetaView()
-        etiquetaRol.poner(usuario?.rol, Sesion.shared.esSupervisor ? .systemPurple : .systemBlue)
+        etiquetaRol.poner(usuario?.rol, Sesion.shared.esSupervisor ? Paleta.cafe : Paleta.mentaFuerte)
 
         let datos = UIStackView(arrangedSubviews: [avatar, lblNombre, lblUsuario, etiquetaRol])
         datos.axis = .vertical
@@ -25,10 +25,12 @@ class CuentaViewController: UIViewController {
         let tarjeta = Tarjeta()
         tarjeta.agregar(datos, margen: 24)
 
-        let btnSalir = botonPrincipal("Cerrar sesión", color: .systemRed)
+        let btnSalir = botonPrincipal("Cerrar sesión", color: Paleta.rojo)
+        let lblApp = crearLabel("Ventas Tecsup · v1.0", tamano: 12, color: Paleta.textoSuave)
+        lblApp.textAlignment = .center
         btnSalir.addTarget(self, action: #selector(cerrarSesion), for: .touchUpInside)
 
-        let stack = UIStackView(arrangedSubviews: [tarjeta, btnSalir])
+        let stack = UIStackView(arrangedSubviews: [tarjeta, btnSalir, lblApp])
         stack.axis = .vertical
         stack.spacing = 24
         montarEnScroll(stack, arriba: 16)
