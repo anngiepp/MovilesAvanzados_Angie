@@ -8,7 +8,7 @@ class ResumenViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGroupedBackground
+        view.backgroundColor = Paleta.fondo
         navigationItem.title = "Resumen"
         stack.axis = .vertical
         stack.spacing = 14
@@ -34,10 +34,10 @@ class ResumenViewController: UIViewController {
     func saludo() -> UIView {
         let usuario = Sesion.shared.usuario
         let fecha = textoFecha(Date(), "EEEE d 'de' MMMM")
-        let lblFecha = crearLabel(fecha.prefix(1).uppercased() + fecha.dropFirst(), tamano: 14, color: .secondaryLabel)
+        let lblFecha = crearLabel(fecha.prefix(1).uppercased() + fecha.dropFirst(), tamano: 14, color: Paleta.textoSuave)
         let lblHola = crearLabel("Hola, \(primerNombre(usuario?.nombre))", tamano: 28, peso: .bold)
         let etiqueta = EtiquetaView()
-        etiqueta.poner(usuario?.rol, .systemPurple)
+        etiqueta.poner(usuario?.rol, Paleta.mentaFuerte)
         let fila = UIStackView(arrangedSubviews: [lblHola, etiqueta])
         fila.alignment = .center
         let vista = UIStackView(arrangedSubviews: [lblFecha, fila])
@@ -55,27 +55,39 @@ class ResumenViewController: UIViewController {
         let vendidoAyer = sumaTotal(ventasValidas(desde: ayer, hasta: hoy))
         let igvMes = ventasValidas(desde: inicioDelMes(), hasta: manana).reduce(0) { $0 + $1.igv }
 
-        let tarjetaHoy = tarjetaIndicador("Vendido hoy")
+        let ventasHoy = ventasValidas(desde: hoy, hasta: manana).count
+
+        // Tarjeta principal café a todo lo ancho
+        let tarjetaHoy = tarjetaIndicador("Vendido hoy", fondo: Paleta.cafe, oscura: true)
+        tarjetaHoy.valor.font = .systemFont(ofSize: 34, weight: .heavy)
         tarjetaHoy.valor.text = soles(vendidoHoy)
         if vendidoAyer > 0 {
             let cambio = (vendidoHoy - vendidoAyer) / vendidoAyer * 100
             tarjetaHoy.detalle.text = String(format: "%@ %.0f%% vs ayer", cambio >= 0 ? "▲" : "▼", abs(cambio))
-            tarjetaHoy.detalle.textColor = cambio >= 0 ? .systemGreen : .systemRed
+            tarjetaHoy.detalle.textColor = cambio >= 0 ? Paleta.menta : Paleta.rosa
         } else {
             tarjetaHoy.detalle.text = "Ayer no hubo ventas"
         }
 
-        let tarjetaIGV = tarjetaIndicador("IGV del mes")
+        let tarjetaIGV = tarjetaIndicador("IGV del mes", fondo: Paleta.menta)
         tarjetaIGV.valor.text = soles(igvMes)
         tarjetaIGV.detalle.text = "Ventas no anuladas"
 
-        let fila = UIStackView(arrangedSubviews: [tarjetaHoy.tarjeta, tarjetaIGV.tarjeta])
+        let tarjetaCantidad = tarjetaIndicador("Ventas hoy", fondo: Paleta.durazno)
+        tarjetaCantidad.valor.text = "\(ventasHoy)"
+        tarjetaCantidad.detalle.text = "Sin contar anuladas"
+
+        let fila = UIStackView(arrangedSubviews: [tarjetaIGV.tarjeta, tarjetaCantidad.tarjeta])
         fila.spacing = 12
         fila.distribution = .fillEqually
-        return fila
+
+        let bloque = UIStackView(arrangedSubviews: [tarjetaHoy.tarjeta, fila])
+        bloque.axis = .vertical
+        bloque.spacing = 12
+        return bloque
     }
 
-    // Barras de los últimos 7 días (hoy es la última, en azul fuerte)
+    // Barras de los últimos 7 días (hoy es la última, en café)
     func grafico() -> UIView {
         let letras = ["D", "L", "M", "X", "J", "V", "S"]
         var valores: [Double] = []
@@ -92,7 +104,7 @@ class ResumenViewController: UIViewController {
         barras.etiquetas = etiquetas
         barras.heightAnchor.constraint(equalToConstant: 130).isActive = true
 
-        let contenido = UIStackView(arrangedSubviews: [crearLabel("Ventas de los últimos 7 días (S/)", tamano: 14, color: .secondaryLabel), barras])
+        let contenido = UIStackView(arrangedSubviews: [crearLabel("Ventas de los últimos 7 días (S/)", tamano: 14, color: Paleta.textoSuave), barras])
         contenido.axis = .vertical
         contenido.spacing = 12
         let tarjeta = Tarjeta()
@@ -113,7 +125,7 @@ class ResumenViewController: UIViewController {
         let ordenado = totales.sorted { $0.value > $1.value }
         let maximo = ordenado.first?.value ?? 1
 
-        let contenido = UIStackView(arrangedSubviews: [crearLabel("Ranking de vendedores (mes)", tamano: 14, color: .secondaryLabel)])
+        let contenido = UIStackView(arrangedSubviews: [crearLabel("Ranking de vendedores (mes)", tamano: 14, color: Paleta.textoSuave)])
         contenido.axis = .vertical
         contenido.spacing = 10
 
@@ -122,7 +134,7 @@ class ResumenViewController: UIViewController {
         }
         for (nombre, total) in ordenado {
             let texto = NSMutableAttributedString(string: nombre, attributes: [.font: UIFont.systemFont(ofSize: 15, weight: .semibold)])
-            texto.append(NSAttributedString(string: " · \(soles(total))", attributes: [.foregroundColor: UIColor.secondaryLabel]))
+            texto.append(NSAttributedString(string: " · \(soles(total))", attributes: [.foregroundColor: Paleta.textoSuave]))
             let lbl = crearLabel(tamano: 15)
             lbl.attributedText = texto
             let barra = UIProgressView(progressViewStyle: .default)
@@ -144,7 +156,7 @@ class ResumenViewController: UIViewController {
         req.sortDescriptors = [NSSortDescriptor(key: "stock", ascending: true)]
         let productos = (try? BD.contexto.fetch(req)) ?? []
 
-        let contenido = UIStackView(arrangedSubviews: [crearLabel("Stock bajo (≤ 5)", tamano: 14, color: .secondaryLabel)])
+        let contenido = UIStackView(arrangedSubviews: [crearLabel("Stock bajo (≤ 5)", tamano: 14, color: Paleta.textoSuave)])
         contenido.axis = .vertical
         contenido.spacing = 8
 
@@ -154,7 +166,7 @@ class ResumenViewController: UIViewController {
         for producto in productos {
             let lbl = crearLabel("\(producto.nombre ?? "") · \(producto.stock) u.", tamano: 16, peso: .semibold)
             let etiqueta = EtiquetaView()
-            etiqueta.poner("Reponer", .systemRed)
+            etiqueta.poner("Reponer", Paleta.rojo)
             let fila = UIStackView(arrangedSubviews: [lbl, etiqueta])
             fila.alignment = .center
             fila.spacing = 8
@@ -176,7 +188,7 @@ extension ResumenViewController {
         let credito = creditoFiscalGuardado
         let resultado = cierreIGV(igvVentas: igvVentas, creditoFiscal: credito)
 
-        let contenido = UIStackView(arrangedSubviews: [crearLabel("Cierre de IGV del mes", tamano: 14, color: .secondaryLabel)])
+        let contenido = UIStackView(arrangedSubviews: [crearLabel("Cierre de IGV del mes", tamano: 14, color: Paleta.textoSuave)])
         contenido.axis = .vertical
         contenido.spacing = 8
         contenido.addArrangedSubview(filaCierre("IGV de ventas", soles(igvVentas)))
@@ -184,7 +196,12 @@ extension ResumenViewController {
 
         let titulo = resultado.saldoAFavor ? "Saldo a favor" : "IGV por pagar"
         let filaTotal = filaCierre(titulo, soles(resultado.monto), negrita: true)
-        contenido.addArrangedSubview(filaTotal)
+        let cajaTotal = Tarjeta()
+        cajaTotal.backgroundColor = resultado.saldoAFavor ? Paleta.menta : Paleta.durazno
+        cajaTotal.layer.borderWidth = 0
+        cajaTotal.layer.shadowOpacity = 0
+        cajaTotal.agregar(filaTotal, margen: 12)
+        contenido.addArrangedSubview(cajaTotal)
 
         let btnCredito = UIButton(type: .system)
         btnCredito.setTitle(credito == 0 ? "Ingresar crédito fiscal" : "Cambiar crédito fiscal", for: .normal)
@@ -248,13 +265,13 @@ class BarrasView: UIView {
         let ancho = rect.width / CGFloat(valores.count)
         let altoLetras: CGFloat = 18
         let altoMaximo = rect.height - altoLetras - 4
-        let atributos: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 12), .foregroundColor: UIColor.secondaryLabel]
+        let atributos: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 12), .foregroundColor: Paleta.textoSuave]
 
         for (i, valor) in valores.enumerated() {
             let alto = max(CGFloat(valor / maximo) * altoMaximo, 4)
             let barra = CGRect(x: CGFloat(i) * ancho + ancho * 0.15, y: altoMaximo - alto, width: ancho * 0.7, height: alto)
             let esHoy = i == valores.count - 1
-            (esHoy ? UIColor.systemBlue : UIColor.systemBlue.withAlphaComponent(0.2)).setFill()
+            (esHoy ? Paleta.cafe : Paleta.menta).setFill()
             UIBezierPath(roundedRect: barra, cornerRadius: 4).fill()
 
             if i < etiquetas.count {

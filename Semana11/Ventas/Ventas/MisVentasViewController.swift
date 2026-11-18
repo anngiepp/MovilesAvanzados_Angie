@@ -8,12 +8,12 @@ class MisVentasViewController: UIViewController, UITableViewDataSource, UISearch
     let tabla = UITableView(frame: .zero, style: .insetGrouped)
     let segPeriodo = UISegmentedControl(items: ["Todas", "Hoy", "Mes"])
     let buscador = UISearchBar()
-    let hoy = tarjetaIndicador("Hoy")
-    let mes = tarjetaIndicador("Mes")
+    let hoy = tarjetaIndicador("Hoy", fondo: Paleta.cafe, oscura: true)
+    let mes = tarjetaIndicador("Mes", fondo: Paleta.menta)
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGroupedBackground
+        view.backgroundColor = Paleta.fondo
         navigationItem.title = "Mis ventas"
         let usuario = Sesion.shared.usuario
         let btnIniciales = UIBarButtonItem(title: iniciales(usuario?.nombre), style: .plain, target: nil, action: nil)

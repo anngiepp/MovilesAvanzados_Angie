@@ -8,6 +8,7 @@ class ProductosViewController: UITableViewController, UISearchResultsUpdating {
     var productos: [Producto] = []
     var categorias: [String] = []
     let chips = ChipsView()
+    let banner = BannerView(icono: "shippingbox.fill")
     let buscador = UISearchController(searchResultsController: nil)
 
     init() {
@@ -27,11 +28,7 @@ class ProductosViewController: UITableViewController, UISearchResultsUpdating {
         navigationItem.searchController = buscador
         navigationItem.hidesSearchBarWhenScrolling = false
 
-        let cabecera = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 48))
-        chips.frame = cabecera.bounds.insetBy(dx: 0, dy: 6)
-        chips.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        cabecera.addSubview(chips)
-        tableView.tableHeaderView = cabecera
+        tableView.tableHeaderView = cabeceraLista(banner: banner, chips: chips, ancho: view.bounds.width)
         chips.alSeleccionar = { [weak self] _ in self?.cargar() }
 
         if Sesion.shared.esSupervisor {
@@ -51,6 +48,9 @@ class ProductosViewController: UITableViewController, UISearchResultsUpdating {
     func cargarCategorias() {
         let req: NSFetchRequest<Producto> = Producto.fetchRequest()
         let todos = (try? BD.contexto.fetch(req)) ?? []
+        let bajos = todos.filter { $0.stock <= 5 }.count
+        banner.lblTitulo.text = "\(todos.count) productos"
+        banner.lblDetalle.text = bajos == 0 ? "Todo el stock está bien" : "\(bajos) con stock bajo"
         categorias = Array(Set(todos.compactMap { $0.categoria })).sorted()
         chips.ponerOpciones(["Todos"] + categorias)
     }
@@ -106,6 +106,7 @@ class ProductosViewController: UITableViewController, UISearchResultsUpdating {
             self.borrar(self.productos[indexPath.row])
             listo(true)
         }
+        borrar.backgroundColor = Paleta.rojo
         return UISwipeActionsConfiguration(actions: [borrar])
     }
 
