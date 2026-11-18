@@ -12,15 +12,17 @@ class ProductosViewController: UITableViewController, UISearchResultsUpdating {
     let buscador = UISearchController(searchResultsController: nil)
 
     init() {
-        super.init(style: .insetGrouped)
+        super.init(style: .plain)
     }
 
     required init?(coder: NSCoder) { fatalError() }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Productos"
+        navigationItem.title = "Catálogo"
         tableView.register(FilaCell.self, forCellReuseIdentifier: "fila")
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = Paleta.fondo
 
         buscador.searchResultsUpdater = self
         buscador.obscuresBackgroundDuringPresentation = false

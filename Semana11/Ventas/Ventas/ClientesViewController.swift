@@ -7,10 +7,10 @@ class ClientesViewController: UITableViewController, UISearchResultsUpdating {
 
     var clientes: [Cliente] = []
     let buscador = UISearchController(searchResultsController: nil)
-    let banner = BannerView(icono: "person.2.fill", fondo: Paleta.durazno)
+    let banner = BannerView(icono: "person.2.fill", fondo: Paleta.arena)
 
     init() {
-        super.init(style: .insetGrouped)
+        super.init(style: .plain)
     }
 
     required init?(coder: NSCoder) { fatalError() }
@@ -19,6 +19,8 @@ class ClientesViewController: UITableViewController, UISearchResultsUpdating {
         super.viewDidLoad()
         navigationItem.title = "Clientes"
         tableView.register(FilaCell.self, forCellReuseIdentifier: "fila")
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = Paleta.fondo
 
         buscador.searchResultsUpdater = self
         buscador.obscuresBackgroundDuringPresentation = false

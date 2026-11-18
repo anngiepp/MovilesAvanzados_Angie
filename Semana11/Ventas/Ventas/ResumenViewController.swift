@@ -35,9 +35,10 @@ class ResumenViewController: UIViewController {
         let usuario = Sesion.shared.usuario
         let fecha = textoFecha(Date(), "EEEE d 'de' MMMM")
         let lblFecha = crearLabel(fecha.prefix(1).uppercased() + fecha.dropFirst(), tamano: 14, color: Paleta.textoSuave)
-        let lblHola = crearLabel("Hola, \(primerNombre(usuario?.nombre))", tamano: 28, peso: .bold)
+        let lblHola = crearLabel("Hola, \(primerNombre(usuario?.nombre)) ✱", tamano: 28, peso: .bold, color: Paleta.cafe)
+        lblHola.font = fuenteSerif(30, .heavy)
         let etiqueta = EtiquetaView()
-        etiqueta.poner(usuario?.rol, Paleta.mentaFuerte)
+        etiqueta.poner(usuario?.rol, Paleta.azulFuerte)
         let fila = UIStackView(arrangedSubviews: [lblHola, etiqueta])
         fila.alignment = .center
         let vista = UIStackView(arrangedSubviews: [lblFecha, fila])
@@ -59,21 +60,21 @@ class ResumenViewController: UIViewController {
 
         // Tarjeta principal café a todo lo ancho
         let tarjetaHoy = tarjetaIndicador("Vendido hoy", fondo: Paleta.cafe, oscura: true)
-        tarjetaHoy.valor.font = .systemFont(ofSize: 34, weight: .heavy)
+        tarjetaHoy.valor.font = fuenteSerif(40, .heavy)
         tarjetaHoy.valor.text = soles(vendidoHoy)
         if vendidoAyer > 0 {
             let cambio = (vendidoHoy - vendidoAyer) / vendidoAyer * 100
             tarjetaHoy.detalle.text = String(format: "%@ %.0f%% vs ayer", cambio >= 0 ? "▲" : "▼", abs(cambio))
-            tarjetaHoy.detalle.textColor = cambio >= 0 ? Paleta.menta : Paleta.rosa
+            tarjetaHoy.detalle.textColor = cambio >= 0 ? Paleta.azul : Paleta.rosa
         } else {
             tarjetaHoy.detalle.text = "Ayer no hubo ventas"
         }
 
-        let tarjetaIGV = tarjetaIndicador("IGV del mes", fondo: Paleta.menta)
+        let tarjetaIGV = tarjetaIndicador("IGV del mes", fondo: Paleta.azul)
         tarjetaIGV.valor.text = soles(igvMes)
         tarjetaIGV.detalle.text = "Ventas no anuladas"
 
-        let tarjetaCantidad = tarjetaIndicador("Ventas hoy", fondo: Paleta.durazno)
+        let tarjetaCantidad = tarjetaIndicador("Ventas hoy", fondo: Paleta.arena)
         tarjetaCantidad.valor.text = "\(ventasHoy)"
         tarjetaCantidad.detalle.text = "Sin contar anuladas"
 
@@ -197,7 +198,7 @@ extension ResumenViewController {
         let titulo = resultado.saldoAFavor ? "Saldo a favor" : "IGV por pagar"
         let filaTotal = filaCierre(titulo, soles(resultado.monto), negrita: true)
         let cajaTotal = Tarjeta()
-        cajaTotal.backgroundColor = resultado.saldoAFavor ? Paleta.menta : Paleta.durazno
+        cajaTotal.backgroundColor = resultado.saldoAFavor ? Paleta.azul : Paleta.arena
         cajaTotal.layer.borderWidth = 0
         cajaTotal.layer.shadowOpacity = 0
         cajaTotal.agregar(filaTotal, margen: 12)
@@ -271,7 +272,7 @@ class BarrasView: UIView {
             let alto = max(CGFloat(valor / maximo) * altoMaximo, 4)
             let barra = CGRect(x: CGFloat(i) * ancho + ancho * 0.15, y: altoMaximo - alto, width: ancho * 0.7, height: alto)
             let esHoy = i == valores.count - 1
-            (esHoy ? Paleta.cafe : Paleta.menta).setFill()
+            (esHoy ? Paleta.cafe : Paleta.azul).setFill()
             UIBezierPath(roundedRect: barra, cornerRadius: 4).fill()
 
             if i < etiquetas.count {

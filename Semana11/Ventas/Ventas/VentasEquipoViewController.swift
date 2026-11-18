@@ -6,7 +6,7 @@ class VentasEquipoViewController: UIViewController, UITableViewDataSource, UITab
 
     var ventas: [Venta] = []
     var vendedores: [Usuario] = []
-    let tabla = UITableView(frame: .zero, style: .insetGrouped)
+    let tabla = UITableView(frame: .zero, style: .plain)
     let segPeriodo = UISegmentedControl(items: ["Todas", "Hoy", "Mes"])
     let chips = ChipsView()
     let buscador = UISearchBar()
@@ -42,6 +42,8 @@ class VentasEquipoViewController: UIViewController, UITableViewDataSource, UITab
         tabla.dataSource = self
         tabla.delegate = self
         tabla.register(FilaCell.self, forCellReuseIdentifier: "fila")
+        tabla.separatorStyle = .none
+        tabla.backgroundColor = Paleta.fondo
         tabla.keyboardDismissMode = .onDrag
         tabla.tableFooterView = notaPie("El nombre del vendedor se lee de la relación venta ▸ vendedor. Desliza para anular.")
         tabla.translatesAutoresizingMaskIntoConstraints = false
