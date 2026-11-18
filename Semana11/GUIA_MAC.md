@@ -22,15 +22,15 @@ open MovilesAvanzados_Angie/Semana11/Ventas/Ventas.xcodeproj
 |---|---|
 | 1 | Crear cuenta: Lucía Paredes / `lparedes` / Supervisor → entra. Cerrar sesión, crear `LPAREDES` → "Usuario repetido" |
 | 2 | Crear cuenta con claves distintas, y con clave `1234` → mensajes de error |
-| 3 | Login `cruiz` con clave mala → "Usuario o clave incorrectos" |
-| 4 | Login `cruiz` / `123456` → Venta: Comercial Andina SAC, Laptop Pro 14, cantidad 2 → total S/ 424.80, stock 38 |
+| 3 | Login `angie1` con clave mala → "Usuario o clave incorrectos" |
+| 4 | Login `angie1` / `123456` → Venta: Comercial Andina SAC, Laptop Pro 14, cantidad 2 → total S/ 424.80, stock 38 |
 | 5 | Venta: Tienda Sol EIRL, Mouse inalámbrico, cantidad 3 → total S/ 123.90 |
 | 6 | Venta: Laptop Pro 14, escribir 50 → "Stock insuficiente" |
-| 7 | Mis ventas como `cruiz` → solo sus ventas, sin deslizar |
+| 7 | Mis ventas como `angie1` → solo sus ventas, sin deslizar |
 | 8 | Login `lparedes` → Ventas → deslizar la venta del caso 4 → Anular sin motivo (botón gris) y con motivo → stock 40, Resumen baja 424.80 |
 | 9 | Clientes → deslizar Comercial Andina → "No se puede borrar" |
-| 10 | Como `cruiz` en Productos → sin "+" y sin borrar |
-| 11 | Como `cruiz`: venta a Tienda Sol de 8 Laptop → en Clientes pasa a Frecuente |
+| 10 | Como `angie1` en Productos → sin "+" y sin borrar |
+| 11 | Como `angie1`: venta a Tienda Sol de 8 Laptop → en Clientes pasa a Frecuente |
 | 12 | Como `lparedes` en Resumen → Cierre de IGV → Ingresar crédito fiscal `2361.60` → "Saldo a favor". Captura `cierre_igv.png` y anota el IGV de ventas en `docs/CierreIGV.md` |
 
 Toma captura de cada pantalla con **⌘S** en el simulador (se guardan en el Escritorio) y pásalas a `Semana11/docs/capturas/`.

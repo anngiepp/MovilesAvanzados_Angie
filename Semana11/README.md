@@ -27,8 +27,8 @@ App de ventas para una tienda, hecha con **UIKit** (interfaz por código) y **Co
 
 | Usuario | Clave | Rol | Nombre |
 |---|---|---|---|
-| `cruiz` | `123456` | Vendedor | Carlos Ruiz |
-| `adiaz` | `123456` | Vendedor | Ana Díaz |
+| `angie1` | `123456` | Vendedor | Carlos Ruiz |
+| `angie2` | `123456` | Vendedor | Ana Díaz |
 | `lparedes` | `123456` | Supervisor | Lucía Paredes · **no viene cargado**: se crea en *Crear cuenta* (caso de prueba 1) |
 
 Datos de ejemplo que se cargan con ellos (`DatosEjemplo.swift`):

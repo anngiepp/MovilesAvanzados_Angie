@@ -20,8 +20,8 @@ enum DatosEjemplo {
         let luis = cliente("Luis Rojas", "DNI 00000002")
         _ = cliente("Tienda Sol EIRL", "RUC 20000000044")
 
-        let carlos = usuario("Carlos Ruiz", "cruiz", "Vendedor")
-        let ana = usuario("Ana Díaz", "adiaz", "Vendedor")
+        let carlos = usuario("Carlos Ruiz", "angie1", "Vendedor")
+        let ana = usuario("Ana Díaz", "angie2", "Vendedor")
 
         venta(carlos, andina, monitor, 4, diasAtras: 6)
         venta(ana, maria, monitor, 3, diasAtras: 5)

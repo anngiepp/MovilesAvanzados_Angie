@@ -139,7 +139,7 @@ Cada venta guarda quién la registró (relación `vendedor`), así se filtra "so
 | 11 *(propio)* | Cliente Regular con S/ 0 compra 8 Laptop (S/ 1,888.00) | En Clientes pasa a **Frecuente**; en la siguiente venta sigue sin descuento |
 | 12 *(cierre)* | En Resumen ingresar crédito fiscal 2,361.60 | Muestra IGV de ventas, resta el crédito y dice "Saldo a favor" con la diferencia |
 
-Datos de ejemplo: la app carga 4 productos, 4 clientes y 2 vendedores (cruiz y adiaz, clave 123456) con algunas ventas para que Comercial Andina SAC ya sea VIP y el resumen tenga datos.
+Datos de ejemplo: la app carga 4 productos, 4 clientes y 2 vendedores (angie1 y angie2, clave 123456) con algunas ventas para que Comercial Andina SAC ya sea VIP y el resumen tenga datos.
 
 ## 7. Plan de commits
 
