@@ -2,9 +2,7 @@
 
 App de ventas para una tienda, hecha con **UIKit** (interfaz por código) y **Core Data**. Tiene login, registro y dos roles: **Vendedor** y **Supervisor**, y las pestañas cambian según el rol. Grupo **A**.
 
-**Equipo:**
-- Angie Portocarrero
-- [Integrante 2]
+**Alumna:** Angie Portocarrero
 
 **Niveles:** Base, Nivel + y Reto.
 

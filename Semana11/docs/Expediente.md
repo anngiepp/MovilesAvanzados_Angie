@@ -8,7 +8,6 @@
 | Integrante | Grupo | App |
 |---|---|---|
 | Angie Portocarrero | A | **Ventas** (UIKit + Core Data) |
-| [Integrante 2] | A | |
 
 Caso: una tienda registra productos, clientes y ventas. La app tiene login, registro y dos roles: **Vendedor** y **Supervisor**. Las pestañas cambian según el rol.
 
