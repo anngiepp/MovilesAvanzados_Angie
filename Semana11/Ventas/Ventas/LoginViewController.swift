@@ -1,62 +1,63 @@
 import UIKit
 import CoreData
 
+// Dos medias lunas apiladas (café y celeste), como tazones vistos de lado
+class TazonesView: UIView {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .clear
+        contentMode = .redraw
+    }
+
+    required init?(coder: NSCoder) { fatalError() }
+
+    override func draw(_ rect: CGRect) {
+        let ancho = rect.width
+        // Media luna celeste (atrás, más abajo)
+        Paleta.azul.setFill()
+        UIBezierPath(ovalIn: CGRect(x: -ancho * 0.45, y: -rect.height, width: ancho * 1.9, height: rect.height * 2)).fill()
+        // Media luna café (adelante)
+        Paleta.cafe.setFill()
+        UIBezierPath(ovalIn: CGRect(x: -ancho * 0.5, y: -rect.height, width: ancho * 2, height: rect.height * 1.8)).fill()
+    }
+}
+
 // A1 · Login
-// Cabecera café con el logo y una tarjeta con el formulario encima
 class LoginViewController: UIViewController {
 
     let txtUsuario = UITextField()
     let txtClave = UITextField()
-    let lblError = crearLabel("⚠︎ Usuario o clave incorrectos", tamano: 14, peso: .medium, color: Paleta.rojo)
+    let lblError = crearLabel("✱ Usuario o clave incorrectos", tamano: 14, peso: .semibold, color: Paleta.rojo)
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Paleta.fondo
         navigationItem.backButtonTitle = "Ingresar"
 
-        // Fondo café arriba con las esquinas de abajo redondeadas
-        let cabecera = UIView()
-        cabecera.backgroundColor = Paleta.cafe
-        cabecera.layer.cornerRadius = 40
-        cabecera.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        cabecera.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(cabecera)
+        let tazones = TazonesView()
+        tazones.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tazones)
         NSLayoutConstraint.activate([
-            cabecera.topAnchor.constraint(equalTo: view.topAnchor),
-            cabecera.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            cabecera.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            cabecera.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.42)
+            tazones.topAnchor.constraint(equalTo: view.topAnchor),
+            tazones.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tazones.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tazones.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.42)
         ])
 
-        let logo = UIImageView(image: UIImage(systemName: "bag.fill"))
-        logo.tintColor = Paleta.cafe
-        logo.contentMode = .scaleAspectFit
-        let fondoLogo = UIView()
-        fondoLogo.backgroundColor = Paleta.menta
-        fondoLogo.layer.cornerRadius = 40
-        logo.translatesAutoresizingMaskIntoConstraints = false
-        fondoLogo.translatesAutoresizingMaskIntoConstraints = false
-        fondoLogo.addSubview(logo)
-        NSLayoutConstraint.activate([
-            fondoLogo.widthAnchor.constraint(equalToConstant: 80),
-            fondoLogo.heightAnchor.constraint(equalToConstant: 80),
-            logo.centerXAnchor.constraint(equalTo: fondoLogo.centerXAnchor),
-            logo.centerYAnchor.constraint(equalTo: fondoLogo.centerYAnchor),
-            logo.widthAnchor.constraint(equalToConstant: 38),
-            logo.heightAnchor.constraint(equalToConstant: 38)
-        ])
+        // Marca sobre el café
+        let lblAsterisco = crearLabel("✱", tamano: 40, peso: .bold, color: Paleta.azul)
+        lblAsterisco.textAlignment = .right
+        let lblMarca = crearLabel("Tienda Tecsup", tamano: 15, peso: .semibold, color: Paleta.azul)
+        let lblTitulo = crearLabel("Ventas", color: Paleta.fondo)
+        lblTitulo.font = fuenteSerif(52, .heavy)
+        let lblSub = crearLabel("registra, vende y controla tu stock", tamano: 15, color: Paleta.arena)
 
-        let lblTitulo = crearLabel("Ventas Tecsup", tamano: 30, peso: .heavy, color: Paleta.fondo)
-        let lblSub = crearLabel("Hola de nuevo, inicia sesión para continuar", tamano: 15, color: Paleta.menta)
-        lblSub.textAlignment = .center
-
-        let marca = UIStackView(arrangedSubviews: [fondoLogo, lblTitulo, lblSub])
+        let marca = UIStackView(arrangedSubviews: [lblAsterisco, lblMarca, lblTitulo, lblSub])
         marca.axis = .vertical
-        marca.alignment = .center
-        marca.spacing = 8
-        marca.setCustomSpacing(16, after: fondoLogo)
+        marca.spacing = 2
+        marca.setCustomSpacing(0, after: lblAsterisco)
 
-        // Formulario dentro de una tarjeta
+        // Formulario sin caja, con campos subrayados
         txtUsuario.placeholder = "Tu usuario"
         txtClave.placeholder = "Tu clave"
         txtClave.isSecureTextEntry = true
@@ -65,29 +66,22 @@ class LoginViewController: UIViewController {
         let btnIngresar = botonPrincipal("Ingresar")
         btnIngresar.addTarget(self, action: #selector(ingresar), for: .touchUpInside)
 
-        let lblForm = crearLabel("Iniciar sesión", tamano: 20, peso: .bold)
-        let formulario = UIStackView(arrangedSubviews: [lblForm, cajaCampo("USUARIO", txtUsuario), cajaCampo("CLAVE", txtClave), lblError, btnIngresar])
-        formulario.axis = .vertical
-        formulario.spacing = 12
-        formulario.setCustomSpacing(18, after: lblError)
-        let tarjeta = Tarjeta()
-        tarjeta.agregar(formulario, margen: 18)
-        for caja in formulario.arrangedSubviews where caja is Tarjeta {
-            caja.backgroundColor = Paleta.fondo
-            caja.layer.shadowOpacity = 0
-        }
-
-        let btnCrear = UIButton(type: .system)
-        let texto = NSMutableAttributedString(string: "¿Primera vez? ", attributes: [.foregroundColor: Paleta.textoSuave])
-        texto.append(NSAttributedString(string: "Crear cuenta", attributes: [.foregroundColor: Paleta.mentaFuerte, .font: UIFont.systemFont(ofSize: 15, weight: .bold)]))
-        btnCrear.setAttributedTitle(texto, for: .normal)
+        let btnCrear = botonBorde("Crear una cuenta nueva")
         btnCrear.addTarget(self, action: #selector(irARegistro), for: .touchUpInside)
 
-        let stack = UIStackView(arrangedSubviews: [marca, tarjeta, btnCrear])
+        let lblO = crearLabel("— o —", tamano: 13, color: Paleta.textoSuave)
+        lblO.textAlignment = .center
+
+        let espacio = UIView()
+        espacio.heightAnchor.constraint(equalToConstant: 124).isActive = true
+
+        let stack = UIStackView(arrangedSubviews: [marca, espacio, cajaCampo("USUARIO", txtUsuario), cajaCampo("CLAVE", txtClave), lblError, btnIngresar, lblO, btnCrear])
         stack.axis = .vertical
-        stack.spacing = 28
-        stack.setCustomSpacing(18, after: tarjeta)
-        montarEnScroll(stack, arriba: 36)
+        stack.spacing = 22
+        stack.setCustomSpacing(0, after: marca)
+        stack.setCustomSpacing(12, after: btnIngresar)
+        stack.setCustomSpacing(12, after: lblO)
+        montarEnScroll(stack, arriba: 12)
     }
 
     override func viewWillAppear(_ animated: Bool) {

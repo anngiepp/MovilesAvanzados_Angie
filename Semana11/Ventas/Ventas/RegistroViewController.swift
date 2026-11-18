@@ -66,7 +66,7 @@ class RegistroViewController: UIViewController {
             lblDisponible.textColor = Paleta.rojo
         } else {
             lblDisponible.text = "✓ Disponible"
-            lblDisponible.textColor = Paleta.mentaFuerte
+            lblDisponible.textColor = Paleta.azulFuerte
         }
     }
 

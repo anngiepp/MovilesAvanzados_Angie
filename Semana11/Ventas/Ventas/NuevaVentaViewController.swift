@@ -48,7 +48,7 @@ class NuevaVentaViewController: UITableViewController {
         let usuario = Sesion.shared.usuario
         let contenedor = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 84))
         let tarjeta = Tarjeta()
-        tarjeta.backgroundColor = Paleta.menta
+        tarjeta.backgroundColor = Paleta.azul
         tarjeta.layer.borderWidth = 0
 
         let avatar = AvatarView(tamano: 40)
@@ -71,6 +71,7 @@ class NuevaVentaViewController: UITableViewController {
 
     func armarCeldaCantidad() {
         celdaCantidad.selectionStyle = .none
+        celdaCantidad.backgroundColor = Paleta.tarjeta
         txtCantidad.keyboardType = .numberPad
         txtCantidad.textAlignment = .center
         txtCantidad.font = .systemFont(ofSize: 17, weight: .semibold)
@@ -138,6 +139,7 @@ class NuevaVentaViewController: UITableViewController {
             return celdaCantidad
         }
         let celda = UITableViewCell(style: .value1, reuseIdentifier: nil)
+        celda.backgroundColor = Paleta.tarjeta
         celda.textLabel?.font = .systemFont(ofSize: 17)
 
         if indexPath.section == 0 {
@@ -167,7 +169,7 @@ class NuevaVentaViewController: UITableViewController {
             celda.detailTextLabel?.text = soles(calculo.igv)
         default:
             celda.textLabel?.text = "Total"
-            celda.backgroundColor = Paleta.menta
+            celda.backgroundColor = Paleta.azul
             celda.textLabel?.font = .systemFont(ofSize: 17, weight: .bold)
             celda.detailTextLabel?.text = soles(calculo.total)
             celda.detailTextLabel?.font = .systemFont(ofSize: 17, weight: .bold)

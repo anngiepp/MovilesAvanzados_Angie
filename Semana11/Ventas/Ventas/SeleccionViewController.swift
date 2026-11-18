@@ -22,6 +22,7 @@ class SeleccionViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let celda = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+        celda.backgroundColor = Paleta.tarjeta
         celda.textLabel?.text = opciones[indexPath.row]
         celda.detailTextLabel?.text = detalles[indexPath.row]
         celda.detailTextLabel?.textColor = Paleta.textoSuave

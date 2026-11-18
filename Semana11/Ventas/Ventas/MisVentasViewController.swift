@@ -5,11 +5,11 @@ import CoreData
 class MisVentasViewController: UIViewController, UITableViewDataSource, UISearchBarDelegate {
 
     var ventas: [Venta] = []
-    let tabla = UITableView(frame: .zero, style: .insetGrouped)
+    let tabla = UITableView(frame: .zero, style: .plain)
     let segPeriodo = UISegmentedControl(items: ["Todas", "Hoy", "Mes"])
     let buscador = UISearchBar()
     let hoy = tarjetaIndicador("Hoy", fondo: Paleta.cafe, oscura: true)
-    let mes = tarjetaIndicador("Mes", fondo: Paleta.menta)
+    let mes = tarjetaIndicador("Mes", fondo: Paleta.azul)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +37,8 @@ class MisVentasViewController: UIViewController, UITableViewDataSource, UISearch
 
         tabla.dataSource = self
         tabla.register(FilaCell.self, forCellReuseIdentifier: "fila")
+        tabla.separatorStyle = .none
+        tabla.backgroundColor = Paleta.fondo
         tabla.keyboardDismissMode = .onDrag
         tabla.tableFooterView = notaPie("Solo aparecen las ventas de este vendedor.")
         tabla.translatesAutoresizingMaskIntoConstraints = false

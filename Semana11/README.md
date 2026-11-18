@@ -21,7 +21,26 @@ App de ventas para una tienda, hecha con **UIKit** (interfaz por código) y **Co
 
 1. Abrir `Ventas/Ventas.xcodeproj` en Xcode 16 o posterior.
 2. Elegir un simulador de iPhone con iOS 17 o posterior y darle ▶.
-3. La primera vez se cargan datos de ejemplo: 4 productos, 4 clientes y dos vendedores (`cruiz` y `adiaz`, clave `123456`). El supervisor se crea desde **Crear cuenta** (caso 1 de prueba).
+3. La primera vez se cargan datos de ejemplo (ver abajo). Para empezar de cero: borrar la app del simulador y volver a correrla.
+
+## Usuarios predeterminados
+
+| Usuario | Clave | Rol | Nombre |
+|---|---|---|---|
+| `cruiz` | `123456` | Vendedor | Carlos Ruiz |
+| `adiaz` | `123456` | Vendedor | Ana Díaz |
+| `lparedes` | `123456` | Supervisor | Lucía Paredes · **no viene cargado**: se crea en *Crear cuenta* (caso de prueba 1) |
+
+Datos de ejemplo que se cargan con ellos (`DatosEjemplo.swift`):
+- **Productos:** Laptop Pro 14 (S/ 200, stock 40), Monitor 24" (S/ 450, stock 9), Mouse inalámbrico (S/ 35, stock 120) y Teclado mecánico (S/ 129.90, stock 4).
+- **Clientes:** Comercial Andina SAC (ya es VIP), María Quispe (Frecuente), Luis Rojas y Tienda Sol EIRL (Regular).
+- **Ventas:** 7 ventas de los últimos días, una de ellas anulada, para que el Resumen y el ranking tengan datos.
+
+## Base de datos (Core Data)
+
+- **Modelo:** `Ventas.xcdatamodeld`, con las entidades Usuario, Producto, Cliente y Venta y sus relaciones.
+- **Conexión:** `AppDelegate.swift` crea el `NSPersistentContainer(name: "Ventas")`, que carga el modelo y abre el archivo `Ventas.sqlite`. Su ruta sale en la consola de Xcode al iniciar la app.
+- **Uso:** `BD.swift` da el contexto (`BD.contexto`) y `BD.guardar()`. Las pantallas leen con `NSFetchRequest` + `NSPredicate` y escriben creando objetos (`Venta(context:)`), cambiando sus atributos y llamando a `guardar()`.
 
 ## Modelo de datos
 

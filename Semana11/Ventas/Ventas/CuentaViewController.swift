@@ -6,16 +6,16 @@ class CuentaViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Paleta.fondo
-        navigationItem.title = "Cuenta"
+        navigationItem.title = "Perfil"
 
         let usuario = Sesion.shared.usuario
         let avatar = AvatarView(tamano: 80)
-        avatar.poner(iniciales(usuario?.nombre), Paleta.menta)
+        avatar.poner(iniciales(usuario?.nombre), Paleta.azul)
 
         let lblNombre = crearLabel(usuario?.nombre ?? "", tamano: 22, peso: .bold)
         let lblUsuario = crearLabel("@" + (usuario?.usuario ?? ""), tamano: 15, color: Paleta.textoSuave)
         let etiquetaRol = EtiquetaView()
-        etiquetaRol.poner(usuario?.rol, Sesion.shared.esSupervisor ? Paleta.cafe : Paleta.mentaFuerte)
+        etiquetaRol.poner(usuario?.rol, Sesion.shared.esSupervisor ? Paleta.cafe : Paleta.azulFuerte)
 
         let datos = UIStackView(arrangedSubviews: [avatar, lblNombre, lblUsuario, etiquetaRol])
         datos.axis = .vertical
