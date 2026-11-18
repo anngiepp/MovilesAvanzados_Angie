@@ -12,7 +12,8 @@ App de ventas para una tienda, hecha con **UIKit** (interfaz por código) y **Co
 |---|---|
 | Expediente (modelo, permisos, reglas, casos, plan de commits) | `docs/Expediente.md` |
 | App en Xcode | `Ventas/Ventas.xcodeproj` |
-| Cierre de IGV del mes | `docs/CierreIGV.md` y tarjeta en el Resumen |
+| Excel (calculadora, casos vs app y cierre de IGV) | `Excel/Ventas_Semana11.xlsx` |
+| Cierre de IGV del mes | `docs/CierreIGV.md`, hoja *Cierre IGV* del Excel y tarjeta en el Resumen |
 | Consultas a la IA | `PROMPTS.md` |
 | Capturas e ícono en la pantalla de inicio | `docs/capturas/` |
 
@@ -63,9 +64,13 @@ Ventas/Ventas/
 └── ResumenViewController                      incluye el gráfico de barras
 ```
 
+## Excel
+
+`Excel/Ventas_Semana11.xlsx` tiene 5 hojas: **Parámetros** (IGV, descuento VIP, límites de categoría y de stock), **Venta** (calculadora con los mismos datos de Nueva venta), **Casos** (casos 4, 5, 6, 8 y 11 calculados con fórmulas y comparados con lo que muestra la app), **Cierre IGV** (IGV de cada venta, crédito fiscal del grupo B y resultado) y **Explicación** (cada fórmula en palabras y dónde está en el código).
+
 ## Casos de prueba
 
-Los 9 casos del laboratorio, 2 propios y el del cierre de IGV están en `docs/Expediente.md` (sección 6) con su resultado esperado.
+Los 9 casos del laboratorio más 2 propios están en `docs/Expediente.md` (sección 6) con su resultado esperado.
 
 ## Cierre de IGV del mes
 
