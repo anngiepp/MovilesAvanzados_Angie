@@ -12,6 +12,7 @@ App de ventas para una tienda, hecha con **UIKit** (interfaz por código) y **Co
 |---|---|
 | Expediente (modelo, permisos, reglas, casos, plan de commits) | `docs/Expediente.md` |
 | App en Xcode | `Ventas/Ventas.xcodeproj` |
+| Cierre de IGV del mes | `docs/CierreIGV.md` y tarjeta en el Resumen |
 | Consultas a la IA | `PROMPTS.md` |
 | Capturas e ícono en la pantalla de inicio | `docs/capturas/` |
 
@@ -43,7 +44,7 @@ App de ventas para una tienda, hecha con **UIKit** (interfaz por código) y **Co
 - **A6 Mis ventas**: solo las del vendedor, indicadores de hoy y del mes, filtro Todas/Hoy/Mes y búsqueda por cliente.
 - **A7 Ventas del equipo**: todas las ventas, filtro por periodo y por vendedor, deslizar para anular.
 - **A8 Anular**: motivo obligatorio, devuelve el stock.
-- **A9 Resumen**: vendido hoy vs ayer, IGV del mes, gráfico de 7 días, ranking de vendedores y stock bajo.
+- **A9 Resumen**: vendido hoy vs ayer, IGV del mes, gráfico de 7 días, ranking de vendedores, stock bajo y **cierre de IGV**.
 
 ## Organización del código
 
@@ -66,6 +67,8 @@ Ventas/Ventas/
 
 Los 9 casos del laboratorio más 2 propios están en `docs/Expediente.md` (sección 6) con su resultado esperado.
 
-## Cierre de IGV (para la próxima clase)
+## Cierre de IGV del mes
 
-IGV de ventas del mes: se lee en la tarjeta **IGV del mes** del Resumen.
+**IGV por pagar = IGV de ventas − crédito fiscal de compras** (si sale negativo es saldo a favor).
+
+En el Resumen está la tarjeta **Cierre de IGV del mes**: toma el IGV de las ventas no anuladas del mes, se escribe el crédito fiscal que trae el grupo B y la app calcula el resultado. Las cifras y el cuadro para la clase están en `docs/CierreIGV.md`.
