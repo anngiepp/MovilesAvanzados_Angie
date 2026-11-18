@@ -31,6 +31,7 @@ open MovilesAvanzados_Angie/Semana11/Ventas/Ventas.xcodeproj
 | 9 | Clientes → deslizar Comercial Andina → "No se puede borrar" |
 | 10 | Como `cruiz` en Productos → sin "+" y sin borrar |
 | 11 | Como `cruiz`: venta a Tienda Sol de 8 Laptop → en Clientes pasa a Frecuente |
+| 12 | Como `lparedes` en Resumen → Cierre de IGV → Ingresar crédito fiscal `2361.60` → "Saldo a favor". Captura `cierre_igv.png` y anota el IGV de ventas en `docs/CierreIGV.md` |
 
 Toma captura de cada pantalla con **⌘S** en el simulador (se guardan en el Escritorio) y pásalas a `Semana11/docs/capturas/`.
 

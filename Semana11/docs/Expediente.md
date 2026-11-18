@@ -78,6 +78,11 @@ Cada venta guarda quién la registró (relación `vendedor`), así se filtra "so
 - Marca `anulada = true`, guarda el motivo y devuelve el stock: 38 + 2 = 40.
 - La venta deja de sumar en el resumen y en la categoría del cliente (el resumen de hoy baja 424.80).
 
+**Cierre de IGV del mes (con el grupo B):**
+- IGV por pagar = IGV de ventas (no anuladas) − crédito fiscal de compras. Si es negativo, es saldo a favor.
+- Ejemplo del enunciado: IGV de ventas 734.10 − crédito fiscal 2,361.60 = −1,627.50 → **saldo a favor S/ 1,627.50**.
+- El crédito fiscal lo trae el grupo B y se escribe en la tarjeta de cierre del Resumen.
+
 **Login y registro:**
 - Usuario único sin importar mayúsculas: "lparedes" y "LPAREDES" son el mismo → se rechaza el segundo.
 - Clave de mínimo 6 caracteres e igual a su confirmación.
@@ -95,7 +100,7 @@ Cada venta guarda quién la registró (relación `vendedor`), así se filtra "so
 | A6 | Mis ventas | Ventas propias, indicadores hoy/mes, filtro y búsqueda | Venta (vendedor == yo) | — |
 | A7 | Ventas del equipo | Todas las ventas, filtro por periodo y vendedor | Venta, Usuario | — |
 | A8 | Anular venta | Alerta con motivo obligatorio | Venta | Venta, Producto.stock |
-| A9 | Resumen | Panel del supervisor | Venta, Usuario, Producto | — |
+| A9 | Resumen | Panel del supervisor y cierre de IGV del mes | Venta, Usuario, Producto | Crédito fiscal (dato del grupo B) |
 | — | Cuenta | Nombre, usuario, rol y cerrar sesión | Sesión | Sesión |
 
 ## 6. Casos de prueba
@@ -113,6 +118,7 @@ Cada venta guarda quién la registró (relación `vendedor`), así se filtra "so
 | 9 | Borrar un cliente que tiene ventas | Se impide y se muestra un mensaje |
 | 10 *(propio)* | Un vendedor entra a Productos | No ve el botón "+" ni puede deslizar para borrar |
 | 11 *(propio)* | Cliente Regular con S/ 0 compra 8 Laptop (S/ 1,888.00) | En Clientes pasa a **Frecuente**; en la siguiente venta sigue sin descuento |
+| 12 *(cierre)* | En Resumen ingresar crédito fiscal 2,361.60 | Muestra IGV de ventas, resta el crédito y dice "Saldo a favor" con la diferencia |
 
 Datos de ejemplo: la app carga 4 productos, 4 clientes y 2 vendedores (cruiz y adiaz, clave 123456) con algunas ventas para que Comercial Andina SAC ya sea VIP y el resumen tenga datos.
 
@@ -129,6 +135,7 @@ Datos de ejemplo: la app carga 4 productos, 4 clientes y 2 vendedores (cruiz y a
 | 7 | A6 Mis ventas (predicate por vendedor, periodo y búsqueda) |
 | 8 | A7 Ventas del equipo y A8 Anular con motivo |
 | 9 | A9 Resumen del supervisor (gráfico, ranking, stock bajo) |
+| 9b | Cierre de IGV del mes en el Resumen y `docs/CierreIGV.md` |
 | 10 | Ícono, capturas, PROMPTS.md y README final |
 
 ## 8. Plan de uso de IA
