@@ -65,7 +65,7 @@ Ventas/Ventas/
 
 ## Casos de prueba
 
-Los 9 casos del laboratorio más 2 propios están en `docs/Expediente.md` (sección 6) con su resultado esperado.
+Los 9 casos del laboratorio, 2 propios y el del cierre de IGV están en `docs/Expediente.md` (sección 6) con su resultado esperado.
 
 ## Cierre de IGV del mes
 
