@@ -142,10 +142,4 @@ Datos de ejemplo: la app carga 4 productos, 4 clientes y 2 vendedores (cruiz y a
 
 - **A mano:** el modelo de datos (entidades, tipos y delete rules), las reglas de negocio con sus números y los casos de prueba de este expediente.
 - **Con IA:** armar la interfaz por código (constraints, celdas, chips, gráfico de barras) y revisar errores de compilación.
-- **Cómo verifico:** corro los 11 casos en el simulador y comparo con los resultados calculados a mano en la sección 4. Cada consulta queda anotada en `PROMPTS.md`.
-
-## 9. Visto bueno
-
-| Fecha | Docente | Confirmación |
-|---|---|---|
-| ____ / ____ / 2026 | Juan León | |
+- **Cómo verifico:** corro los 12 casos en el simulador y comparo con los resultados calculados a mano en la sección 4. Cada consulta queda anotada en `PROMPTS.md`.
