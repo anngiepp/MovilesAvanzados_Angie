@@ -3,6 +3,25 @@
 **Curso:** Desarrollo de Aplicaciones Móviles Avanzadas · Tecsup
 **Laboratorio:** 11 · Manejo de datos con Core Data
 
+## Enunciado (resumen)
+
+**Laboratorio 11 · Trabajo de la semana · Grupo A: app de Ventas (UIKit + Core Data).**
+
+Una tienda necesita registrar productos, clientes y ventas en una app de iPhone que funcione como app de empresa: con inicio de sesión, registro y dos roles.
+
+- **Datos:** cuatro entidades en Core Data: Usuario, Producto, Cliente y Venta. Cada venta queda ligada a su vendedor, producto y cliente. No se puede borrar un producto, cliente o usuario que ya tenga ventas (delete rule Deny).
+- **Roles:**
+  - El **vendedor** consulta productos, registra clientes y ventas, y solo ve sus propias ventas.
+  - El **supervisor** administra los productos, ve las ventas de todo el equipo, anula ventas con un motivo y tiene un panel de resumen.
+- **Reglas:**
+  - La categoría del cliente depende de lo que compró: Regular, Frecuente desde S/ 1,000 y VIP desde S/ 5,000.
+  - Los VIP tienen 10 % de descuento y a todas las ventas se les aplica IGV de 18 %.
+  - No se vende más de lo que hay en stock.
+  - Al anular una venta, el stock se devuelve.
+- **Pantallas (9):** login, crear cuenta, productos, clientes, nueva venta, mis ventas, ventas del equipo, anular venta y resumen del supervisor.
+- **Cierre de IGV:** el grupo A aporta el IGV de sus ventas del mes y el grupo B el crédito fiscal de sus compras, para calcular el IGV por pagar o el saldo a favor.
+- **Entrega:** se presenta y se defiende en la siguiente sesión, con capturas de los casos de prueba y el ícono de la app.
+
 ## 1. Integrantes y caso
 
 | Integrante | Grupo | App |
