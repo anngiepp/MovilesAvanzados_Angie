@@ -31,6 +31,8 @@ Con los datos de ejemplo y los casos de prueba hechos (el caso 4 queda anulado e
 
 > La cifra final es la que muestre la tarjeta el día de la entrega (cambia si se registran o anulan más ventas). Captura: `docs/capturas/cierre_igv.png`.
 
+El mismo cálculo está con fórmulas en la hoja **Cierre IGV** de `Excel/Ventas_Semana11.xlsx` (solo hay que cambiar el crédito fiscal en la celda amarilla).
+
 ## Cuadro para completar en clase
 
 | Concepto | Monto |
