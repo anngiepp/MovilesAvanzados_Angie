@@ -75,3 +75,29 @@ Muestra el `UserFormView` como una ventana que sube desde abajo cuando `showingF
 - JSONPlaceholder es una API de prueba: responde como si guardara los cambios, pero no guarda nada. Por eso el PUT y el DELETE actualizan la lista localmente.
 - Al crear un usuario la API siempre devuelve `id: 11`. Si agregas dos, se repite el id y al editar o eliminar uno se afectan los dos. Para evitarlo, en el POST se le asigna un id local que no se repite.
 - El PUT a un usuario creado por nosotros (id mayor a 10) devuelve error en la API porque ese usuario no existe allá, pero igual se actualiza en la lista.
+
+## Actividad 03 - URLSession con async/await
+
+Sobre el mismo proyecto `Semana13_MetodosAPI` se cambiaron `UserViewModel` y `ContentView` para usar `async/await` en vez de `dataTask` con closures. La versión de la actividad 2 queda en el historial de commits.
+
+- **GET:** `URLSession.shared.data(from: url)`
+- **POST, PUT y DELETE:** `URLSession.shared.data(for: request)`
+- Las funciones del ViewModel ahora son `async`, y en la vista se llaman dentro de un `Task { await ... }`.
+- La lista se actualiza con `await MainActor.run { ... }` en vez de `DispatchQueue.main.async`.
+
+### Preguntas
+
+**¿Cuál es la diferencia de usar URLSession.shared.data en vez de URLSession.shared.dataTask?**
+`dataTask` trabaja con un closure (callback): creas la tarea, le pasas un bloque de código que se ejecuta cuando llega la respuesta y tienes que acordarte de llamar a `resume()`. Además, los errores llegan como un parámetro opcional que hay que revisar a mano. `data` usa async/await: devuelve directamente `(data, response)` con `try await`, no necesita `resume()` y los errores se manejan con `do/catch`. El código queda más ordenado, de arriba hacia abajo, sin closures anidados.
+
+**¿Para qué sirve la palabra reservada await?**
+Marca el punto donde el código espera el resultado de una función asíncrona, como la respuesta de la API. Mientras espera no bloquea la app: la interfaz sigue funcionando y, cuando llega la respuesta, el código continúa en la siguiente línea. Solo se puede usar dentro de una función `async` o de un `Task`.
+
+**¿Para qué sirve la estructura Task?**
+Crea un contexto asíncrono desde código que no es `async`, por ejemplo la acción de un botón o el `onAppear`. Sin `Task` no podríamos llamar con `await` a `fetchUsers()`, `createUser()`, `updateUser()` o `deleteUser()` desde la vista.
+
+## Conclusiones
+
+1. Separar el proyecto con MVVM (Models, View, ViewModels) ayuda a mantener la lógica de la API fuera de la vista. Así la vista solo muestra los datos y reacciona sola a los cambios gracias a `@Published` y `@StateObject`.
+2. Con `URLSession` y `Codable` se pueden consumir los cuatro métodos de una API REST (GET, POST, PUT y DELETE), mandando y recibiendo JSON con `JSONEncoder` y `JSONDecoder`. Hay que tomar en cuenta que JSONPlaceholder es una API de prueba que no guarda los cambios.
+3. `async/await` deja el código más claro que `dataTask`, porque se lee en orden, no necesita `resume()` y maneja los errores con `do/catch`. La interfaz igual se tiene que actualizar en el hilo principal, con `MainActor.run` o `DispatchQueue.main.async`.
