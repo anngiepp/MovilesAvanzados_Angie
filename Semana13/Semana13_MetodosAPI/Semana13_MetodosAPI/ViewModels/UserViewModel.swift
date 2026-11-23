@@ -36,4 +36,32 @@ class UserViewModel: ObservableObject {
             }
         }.resume()
     }
+
+    // POST: Crear un nuevo usuario
+    func createUser(name: String, email: String) {
+        guard let url = URL(string: "https://jsonplaceholder.typicode.com/users") else { return }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let newUser = User(id: 0, name: name, email: email) // id lo ignora el servidor
+
+        do {
+            request.httpBody = try JSONEncoder().encode(newUser)
+        } catch {
+            print("Error al codificar el usuario")
+            return
+        }
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let data = data {
+                if let createdUser = try? JSONDecoder().decode(User.self, from: data) {
+                    DispatchQueue.main.async {
+                        self.users.append(createdUser)
+                    }
+                }
+            }
+        }.resume()
+    }
 }
