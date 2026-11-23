@@ -57,7 +57,9 @@ struct ContentView: View {
                 if let user = editingUser {
                     UserFormView(name: user.name, email: user.email, isEditing: true) { name, email in
                         let updated = User(id: user.id, name: name, email: email)
-                        viewModel.updateUser(user: updated)
+                        Task {
+                            await viewModel.updateUser(user: updated)
+                        }
                     }
                 } else {
                     UserFormView(name: "", email: "", isEditing: false) { name, email in

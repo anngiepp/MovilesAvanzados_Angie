@@ -64,7 +64,7 @@ class UserViewModel: ObservableObject {
     }
 
     // PUT: Actualizar un usuario existente
-    func updateUser(user: User) {
+    func updateUser(user: User) async {
         guard let url = URL(string: "https://jsonplaceholder.typicode.com/users/\(user.id)") else { return }
 
         var request = URLRequest(url: url)
@@ -73,19 +73,19 @@ class UserViewModel: ObservableObject {
 
         do {
             request.httpBody = try JSONEncoder().encode(user)
-        } catch {
-            print("Error al codificar el usuario")
-            return
-        }
+            let (_, _) = try await URLSession.shared.data(for: request)
 
-        URLSession.shared.dataTask(with: request) { _, response, error in
-            DispatchQueue.main.async {
+            await MainActor.run {
                 if let index = self.users.firstIndex(where: { $0.id == user.id }) {
                     self.users[index] = user
+                    print("Usuario actualizado localmente.")
+                } else {
+                    print("Usuario no encontrado para actualizar.")
                 }
-                print("Usuario actualizado localmente (simulado)")
             }
-        }.resume()
+        } catch {
+            print("Error al actualizar usuario: \(error)")
+        }
     }
 
     // DELETE: Eliminar un usuario por id
