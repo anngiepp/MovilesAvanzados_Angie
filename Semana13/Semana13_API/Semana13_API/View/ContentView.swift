@@ -8,8 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var viewModel = UserViewModel()
+
     var body: some View {
-        Text("Semana 13 - API")
+        NavigationView {
+            List(viewModel.users) { user in
+                Text(user.name) // Solo el nombre
+            }
+            .navigationTitle("Usuarios - API")
+            .onAppear {
+                viewModel.fetchUsers()
+            }
+        }
     }
 }
 
