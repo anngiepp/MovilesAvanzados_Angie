@@ -64,4 +64,29 @@ class UserViewModel: ObservableObject {
             }
         }.resume()
     }
+
+    // PUT: Actualizar un usuario existente
+    func updateUser(user: User) {
+        guard let url = URL(string: "https://jsonplaceholder.typicode.com/users/\(user.id)") else { return }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        do {
+            request.httpBody = try JSONEncoder().encode(user)
+        } catch {
+            print("Error al codificar el usuario")
+            return
+        }
+
+        URLSession.shared.dataTask(with: request) { _, response, error in
+            DispatchQueue.main.async {
+                if let index = self.users.firstIndex(where: { $0.id == user.id }) {
+                    self.users[index] = user
+                }
+                print("Usuario actualizado localmente (simulado)")
+            }
+        }.resume()
+    }
 }
