@@ -58,7 +58,9 @@ class UserViewModel: ObservableObject {
             if let data = data {
                 if let createdUser = try? JSONDecoder().decode(User.self, from: data) {
                     DispatchQueue.main.async {
-                        self.users.append(createdUser)
+                        // La API siempre devuelve id 11, asi que le damos uno que no se repita
+                        let nuevoId = (self.users.map { $0.id }.max() ?? 0) + 1
+                        self.users.append(User(id: nuevoId, name: createdUser.name, email: createdUser.email))
                     }
                 }
             }
