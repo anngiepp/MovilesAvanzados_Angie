@@ -10,6 +10,18 @@ import Combine
 class UserViewModel: ObservableObject {
 
     @Published var users: [User] = []
+    @Published var searchText: String = ""   // Texto del filtro
+
+    // Filtra los usuarios segun el texto ingresado
+    var filteredUsers: [User] {
+        if searchText.isEmpty {
+            return users
+        } else {
+            return users.filter { user in
+                user.name.lowercased().contains(searchText.lowercased())
+            }
+        }
+    }
 
     func fetchUsers() {
         guard let url = URL(string: "https://jsonplaceholder.typicode.com/users") else {
