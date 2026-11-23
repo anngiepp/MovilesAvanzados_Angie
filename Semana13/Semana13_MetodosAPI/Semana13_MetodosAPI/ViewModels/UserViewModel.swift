@@ -39,7 +39,7 @@ class UserViewModel: ObservableObject {
     }
 
     // POST: Crear un nuevo usuario
-    func createUser(name: String, email: String) {
+    func createUser(name: String, email: String) async {
         guard let url = URL(string: "https://jsonplaceholder.typicode.com/users") else { return }
 
         var request = URLRequest(url: url)
@@ -50,22 +50,17 @@ class UserViewModel: ObservableObject {
 
         do {
             request.httpBody = try JSONEncoder().encode(newUser)
-        } catch {
-            print("Error al codificar el usuario")
-            return
-        }
+            let (data, _) = try await URLSession.shared.data(for: request)
+            let createdUser = try JSONDecoder().decode(User.self, from: data)
 
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let data = data {
-                if let createdUser = try? JSONDecoder().decode(User.self, from: data) {
-                    DispatchQueue.main.async {
-                        // La API siempre devuelve id 11, asi que le damos uno que no se repita
-                        let nuevoId = (self.users.map { $0.id }.max() ?? 0) + 1
-                        self.users.append(User(id: nuevoId, name: createdUser.name, email: createdUser.email))
-                    }
-                }
+            await MainActor.run {
+                // La API siempre devuelve id 11, asi que le damos uno que no se repita
+                let nuevoId = (self.users.map { $0.id }.max() ?? 0) + 1
+                self.users.append(User(id: nuevoId, name: createdUser.name, email: createdUser.email))
             }
-        }.resume()
+        } catch {
+            print("Error al crear usuario: \(error)")
+        }
     }
 
     // PUT: Actualizar un usuario existente

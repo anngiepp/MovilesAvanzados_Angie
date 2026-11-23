@@ -61,7 +61,9 @@ struct ContentView: View {
                     }
                 } else {
                     UserFormView(name: "", email: "", isEditing: false) { name, email in
-                        viewModel.createUser(name: name, email: email)
+                        Task {
+                            await viewModel.createUser(name: name, email: email)
+                        }
                     }
                 }
             }
