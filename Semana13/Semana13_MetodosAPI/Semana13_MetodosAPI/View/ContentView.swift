@@ -27,7 +27,9 @@ struct ContentView: View {
                     }
                     .swipeActions {
                         Button(role: .destructive) {
-                            viewModel.deleteUser(id: user.id)
+                            Task {
+                                await viewModel.deleteUser(id: user.id)
+                            }
                         } label: {
                             Label("Eliminar", systemImage: "trash")
                         }

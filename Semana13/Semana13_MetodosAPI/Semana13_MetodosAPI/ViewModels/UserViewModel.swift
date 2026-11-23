@@ -89,17 +89,21 @@ class UserViewModel: ObservableObject {
     }
 
     // DELETE: Eliminar un usuario por id
-    func deleteUser(id: Int) {
+    func deleteUser(id: Int) async {
         guard let url = URL(string: "https://jsonplaceholder.typicode.com/users/\(id)") else { return }
 
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
 
-        URLSession.shared.dataTask(with: request) { _, response, error in
-            DispatchQueue.main.async {
+        do {
+            let (_, _) = try await URLSession.shared.data(for: request)
+
+            await MainActor.run {
                 self.users.removeAll { $0.id == id }
                 print("Usuario eliminado localmente (simulado)")
             }
-        }.resume()
+        } catch {
+            print("Error al eliminar usuario: \(error)")
+        }
     }
 }
