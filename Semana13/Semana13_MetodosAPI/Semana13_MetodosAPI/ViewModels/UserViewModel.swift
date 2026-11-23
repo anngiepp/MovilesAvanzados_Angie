@@ -23,18 +23,19 @@ class UserViewModel: ObservableObject {
     }
 
     // GET: Obtener todos los usuarios
-    func fetchUsers() {
+    func fetchUsers() async {
         guard let url = URL(string: "https://jsonplaceholder.typicode.com/users") else { return }
 
-        URLSession.shared.dataTask(with: url) { data, _, _ in
-            if let data = data {
-                if let decodedUsers = try? JSONDecoder().decode([User].self, from: data) {
-                    DispatchQueue.main.async {
-                        self.users = decodedUsers
-                    }
-                }
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let decodedUsers = try JSONDecoder().decode([User].self, from: data)
+
+            await MainActor.run {
+                self.users = decodedUsers
             }
-        }.resume()
+        } catch {
+            print("Error al obtener usuarios: \(error)")
+        }
     }
 
     // POST: Crear un nuevo usuario

@@ -49,7 +49,9 @@ struct ContentView: View {
             }
             .navigationTitle("Usuarios")
             .onAppear {
-                viewModel.fetchUsers()
+                Task {
+                    await viewModel.fetchUsers()
+                }
             }
             .sheet(isPresented: $showingForm) {
                 if let user = editingUser {
