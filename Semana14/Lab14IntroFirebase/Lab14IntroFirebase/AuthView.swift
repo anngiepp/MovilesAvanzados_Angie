@@ -26,20 +26,8 @@ struct AuthView: View {
                 Spacer()
 
                 if isSignedIn {
-                    // Vista cuando ya inicio sesion
-                    VStack(spacing: 20) {
-                        Text("Welcome!")
-                            .font(.title)
-                            .foregroundColor(.green)
-
-                        Text("You are signed in")
-                            .font(.body)
-
-                        Button("Sign Out") {
-                            signOut()
-                        }
-                        .buttonStyle(SignOutButtonStyle())
-                    }
+                    // Muestra los mensajes cuando ya inicio sesion
+                    MessagesView()
                 } else {
                     // Formulario de inicio de sesion
                     VStack(spacing: 15) {
