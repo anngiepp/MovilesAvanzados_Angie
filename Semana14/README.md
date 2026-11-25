@@ -30,6 +30,12 @@ Los usuarios registrados aparecen en la consola de Firebase, en **Authentication
 
 Si entras con varios usuarios, los mensajes de todos aparecen en la misma lista.
 
+## Mejoras de interfaz
+
+- **AuthView:** pantalla de inicio más limpia, con ícono, campos con fondo y un indicador de carga mientras Firebase responde.
+- **MessageBubble:** los mensajes se ven como un chat; los tuyos a la derecha en azul y los de otros a la izquierda con su correo.
+- **MessagesView:** baja sola al último mensaje, se puede enviar con la tecla enter y muestra un aviso cuando todavía no hay mensajes.
+
 ## Para ejecutarla
 
 1. Crear un proyecto en Firebase y activar **Authentication → Correo electrónico/contraseña**.

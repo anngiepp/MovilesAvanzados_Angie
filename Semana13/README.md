@@ -50,6 +50,16 @@ Sobre el mismo proyecto `Semana13_MetodosAPI`, se cambiaron `UserViewModel` y `C
 
 La versión con `dataTask` de la actividad 2 queda en el historial de commits.
 
+### Mejoras de interfaz
+
+Después de las actividades se mejoró la vista de `Semana13_MetodosAPI`:
+
+- Cada usuario tiene un círculo con su inicial (`UserRow`).
+- Buscador nativo con `.searchable` y botón **+** arriba para agregar.
+- Mientras carga sale un `ProgressView`, y si la búsqueda no encuentra nada se muestra un aviso.
+- Se puede deslizar a la derecha para editar y a la izquierda para eliminar, y jalar hacia abajo para recargar la lista.
+- El formulario tiene botón **Cancelar** y solo deja guardar si el nombre no está vacío y el email es válido.
+
 ## Notas
 
 - JSONPlaceholder es una API de prueba: responde como si guardara los cambios, pero no guarda nada. Por eso los cambios del POST, PUT y DELETE solo se ven en la lista de la app.
