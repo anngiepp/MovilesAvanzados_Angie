@@ -50,13 +50,16 @@ struct UserFormView: View {
                             .font(.caption)
                             .foregroundColor(.tinta.opacity(0.6))
                             .padding(.top, 8)
-                        TextField("Ej. angie@correo.com", text: $email)
-                            .keyboardType(.emailAddress)
-                            .textInputAutocapitalization(.never)
-                            .autocorrectionDisabled()
-                            .padding()
-                            .background(Color.rosa)
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                        // verbatim para que el correo de ejemplo no se pinte como enlace
+                        TextField(text: $email, prompt: Text(verbatim: "Ej. angie@correo.com")) {
+                            Text("Email")
+                        }
+                        .keyboardType(.emailAddress)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .padding()
+                        .background(Color.rosa)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
 
                         if !email.isEmpty && !emailValido {
                             Text("Ingresa un email válido")
