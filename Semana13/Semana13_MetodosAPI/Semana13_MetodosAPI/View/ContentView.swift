@@ -14,45 +14,63 @@ struct ContentView: View {
     @State private var editingUser: User? = nil
 
     var body: some View {
-        NavigationView {
-            VStack {
-                TextField("Buscar usuario por nombre", text: $viewModel.searchText)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-
-                List(viewModel.filteredUsers) { user in
-                    VStack(alignment: .leading) {
-                        Text(user.name).font(.headline)
-                        Text(user.email).font(.subheadline).foregroundColor(.gray)
-                    }
-                    .swipeActions {
-                        Button(role: .destructive) {
-                            Task {
-                                await viewModel.deleteUser(id: user.id)
+        NavigationStack {
+            Group {
+                if viewModel.isLoading && viewModel.users.isEmpty {
+                    ProgressView("Cargando usuarios...")
+                } else if viewModel.filteredUsers.isEmpty && !viewModel.searchText.isEmpty {
+                    ContentUnavailableView.search(text: viewModel.searchText)
+                } else if viewModel.users.isEmpty {
+                    ContentUnavailableView(
+                        "Sin usuarios",
+                        systemImage: "person.2.slash",
+                        description: Text("Revisa tu conexión e inténtalo de nuevo")
+                    )
+                } else {
+                    List(viewModel.filteredUsers) { user in
+                        UserRow(user: user)
+                            .swipeActions(edge: .trailing) {
+                                Button(role: .destructive) {
+                                    Task {
+                                        await viewModel.deleteUser(id: user.id)
+                                    }
+                                } label: {
+                                    Label("Eliminar", systemImage: "trash")
+                                }
                             }
-                        } label: {
-                            Label("Eliminar", systemImage: "trash")
-                        }
-
-                        Button {
-                            editingUser = user
-                            showingForm = true
-                        } label: {
-                            Label("Editar", systemImage: "pencil")
-                        }.tint(.blue)
+                            .swipeActions(edge: .leading) {
+                                Button {
+                                    editingUser = user
+                                    showingForm = true
+                                } label: {
+                                    Label("Editar", systemImage: "pencil")
+                                }
+                                .tint(.blue)
+                            }
+                    }
+                    .refreshable {
+                        await viewModel.fetchUsers()
                     }
                 }
-
-                Button("➕ Agregar Usuario") {
-                    editingUser = nil
-                    showingForm = true
-                }
-                .padding()
             }
             .navigationTitle("Usuarios")
+            .searchable(text: $viewModel.searchText, prompt: "Buscar usuario por nombre")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        editingUser = nil
+                        showingForm = true
+                    } label: {
+                        Label("Agregar Usuario", systemImage: "plus")
+                    }
+                }
+            }
             .onAppear {
-                Task {
-                    await viewModel.fetchUsers()
+                // Solo carga la primera vez para no perder los usuarios agregados
+                if viewModel.users.isEmpty {
+                    Task {
+                        await viewModel.fetchUsers()
+                    }
                 }
             }
             .sheet(isPresented: $showingForm) {
