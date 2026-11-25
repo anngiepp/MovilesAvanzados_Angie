@@ -50,15 +50,24 @@ Sobre el mismo proyecto `Semana13_MetodosAPI`, se cambiaron `UserViewModel` y `C
 
 La versión con `dataTask` de la actividad 2 queda en el historial de commits.
 
-### Mejoras de interfaz
+### Rediseño de la interfaz
 
-Después de las actividades se mejoró la vista de `Semana13_MetodosAPI`:
+Después de las actividades se rediseñó `Semana13_MetodosAPI` con un estilo propio en tonos pastel (celeste y rosa), tarjetas redondeadas y botones negros en forma de píldora.
 
-- Cada usuario tiene un círculo con su inicial (`UserRow`).
-- Buscador nativo con `.searchable` y botón **+** arriba para agregar.
-- Mientras carga sale un `ProgressView`, y si la búsqueda no encuentra nada se muestra un aviso.
-- Se puede deslizar a la derecha para editar y a la izquierda para eliminar, y jalar hacia abajo para recargar la lista.
-- El formulario tiene botón **Cancelar** y solo deja guardar si el nombre no está vacío y el email es válido.
+```
+View/
+├── Theme.swift          → colores, botón píldora, puntitos de adorno y círculo con inicial
+├── ContentView.swift    → cabecera con buscador, tarjeta con el total y usuarios en dos columnas
+├── UserCard.swift       → tarjeta de cada usuario
+├── UserDetailView.swift → perfil del usuario con botones para editar y eliminar
+└── UserFormView.swift   → formulario para agregar o editar
+```
+
+- Al tocar una tarjeta se entra al **perfil** del usuario, y desde ahí se puede **editar** o **eliminar** (con confirmación).
+- También se puede mantener presionada una tarjeta para editar o eliminar rápido.
+- Mientras carga sale un `ProgressView`, si la búsqueda no encuentra nada se muestra un aviso, y se puede jalar hacia abajo para recargar.
+- El formulario solo deja guardar si el nombre no está vacío y el email es válido.
+- La versión con `swipeActions` de la guía queda en el historial de commits.
 
 ## Notas
 
