@@ -11,52 +11,19 @@ struct AuthView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var isSignedIn = false
+    @State private var isLoading = false
     @State private var showAlert = false
     @State private var alertMessage = ""
     @State private var authStateListener: AuthStateDidChangeListenerHandle?
 
     var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
-                Text("Lab 14: Firebase")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding(.top, 50)
-
-                Spacer()
-
-                if isSignedIn {
-                    // Muestra los mensajes cuando ya inicio sesion
-                    MessagesView()
-                } else {
-                    // Formulario de inicio de sesion
-                    VStack(spacing: 15) {
-                        TextField("Email", text: $email)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .autocapitalization(.none)
-                            .keyboardType(.emailAddress)
-
-                        SecureField("Password", text: $password)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-
-                        HStack(spacing: 20) {
-                            Button("Sign In") {
-                                signIn()
-                            }
-                            .buttonStyle(PrimaryButtonStyle())
-
-                            Button("Sign Up") {
-                                signUp()
-                            }
-                            .buttonStyle(SecondaryButtonStyle())
-                        }
-                    }
-                    .padding(.horizontal, 30)
-                }
-
-                Spacer()
+        Group {
+            if isSignedIn {
+                // Muestra los mensajes cuando ya inicio sesion
+                MessagesView()
+            } else {
+                loginForm
             }
-            .navigationBarHidden(true)
         }
         .alert("Message", isPresented: $showAlert) {
             Button("OK") { }
@@ -75,6 +42,64 @@ struct AuthView: View {
         }
     }
 
+    // Formulario de inicio de sesion
+    var loginForm: some View {
+        VStack(spacing: 24) {
+            Spacer()
+
+            VStack(spacing: 8) {
+                Image(systemName: "flame.fill")
+                    .font(.system(size: 60))
+                    .foregroundColor(.orange)
+
+                Text("Lab 14: Firebase")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+
+                Text("Sign in or create an account")
+                    .foregroundColor(.secondary)
+            }
+
+            VStack(spacing: 12) {
+                TextField("Email", text: $email)
+                    .keyboardType(.emailAddress)
+                    .textContentType(.emailAddress)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .padding()
+                    .background(Color(.secondarySystemBackground))
+                    .cornerRadius(10)
+
+                SecureField("Password (min. 6 characters)", text: $password)
+                    .textContentType(.password)
+                    .padding()
+                    .background(Color(.secondarySystemBackground))
+                    .cornerRadius(10)
+            }
+
+            if isLoading {
+                ProgressView()
+                    .padding()
+            } else {
+                VStack(spacing: 12) {
+                    Button("Sign In") {
+                        signIn()
+                    }
+                    .buttonStyle(PrimaryButtonStyle())
+
+                    Button("Sign Up") {
+                        signUp()
+                    }
+                    .buttonStyle(SecondaryButtonStyle())
+                }
+            }
+
+            Spacer()
+            Spacer()
+        }
+        .padding(.horizontal, 30)
+    }
+
     // MARK: - Authentication Functions
 
     func signIn() {
@@ -83,7 +108,9 @@ struct AuthView: View {
             showAlert = true
             return
         }
+        isLoading = true
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
+            isLoading = false
             if let error = error {
                 alertMessage = "Sign in failed: \(error.localizedDescription)"
                 showAlert = true
@@ -107,7 +134,9 @@ struct AuthView: View {
             showAlert = true
             return
         }
+        isLoading = true
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
+            isLoading = false
             if let error = error {
                 alertMessage = "Sign up failed: \(error.localizedDescription)"
                 showAlert = true
@@ -146,7 +175,9 @@ struct AuthView: View {
 struct PrimaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
+            .fontWeight(.semibold)
             .foregroundColor(.white)
+            .frame(maxWidth: .infinity)
             .padding()
             .background(Color.blue)
             .cornerRadius(10)
@@ -157,24 +188,15 @@ struct PrimaryButtonStyle: ButtonStyle {
 struct SecondaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
+            .fontWeight(.semibold)
             .foregroundColor(.blue)
+            .frame(maxWidth: .infinity)
             .padding()
             .background(Color.clear)
             .overlay(
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(Color.blue, lineWidth: 2)
             )
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-    }
-}
-
-struct SignOutButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .foregroundColor(.white)
-            .padding()
-            .background(Color.red)
-            .cornerRadius(10)
             .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
     }
 }
