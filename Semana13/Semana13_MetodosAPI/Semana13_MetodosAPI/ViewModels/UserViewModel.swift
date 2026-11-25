@@ -11,6 +11,7 @@ import Combine
 class UserViewModel: ObservableObject {
     @Published var users: [User] = []
     @Published var searchText: String = ""
+    @Published var isLoading = false
 
     var filteredUsers: [User] {
         if searchText.isEmpty {
@@ -26,6 +27,8 @@ class UserViewModel: ObservableObject {
     func fetchUsers() async {
         guard let url = URL(string: "https://jsonplaceholder.typicode.com/users") else { return }
 
+        isLoading = true
+
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let decodedUsers = try JSONDecoder().decode([User].self, from: data)
@@ -36,6 +39,8 @@ class UserViewModel: ObservableObject {
         } catch {
             print("Error al obtener usuarios: \(error)")
         }
+
+        isLoading = false
     }
 
     // POST: Crear un nuevo usuario
