@@ -24,41 +24,66 @@ struct UserFormView: View {
 
     var body: some View {
         NavigationStack {
-            Form {
-                Section {
-                    TextField("Nombre", text: $name)
-                        .textContentType(.name)
+            ScrollView {
+                VStack(spacing: 20) {
+                    Image(systemName: isEditing ? "pencil" : "person.badge.plus")
+                        .font(.title2)
+                        .foregroundColor(.white)
+                        .frame(width: 64, height: 64)
+                        .background(Circle().fill(Color.tinta))
 
-                    TextField("Email", text: $email)
-                        .keyboardType(.emailAddress)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                } header: {
-                    Text("Datos del usuario")
-                } footer: {
-                    if !email.isEmpty && !emailValido {
-                        Text("Ingresa un email válido")
-                            .foregroundColor(.red)
+                    Text(isEditing ? "Editar usuario" : "Nuevo usuario")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Nombre")
+                            .font(.caption)
+                            .foregroundColor(.tinta.opacity(0.6))
+                        TextField("Ej. Angie Portocarrero", text: $name)
+                            .textContentType(.name)
+                            .padding()
+                            .background(Color.celeste)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+
+                        Text("Email")
+                            .font(.caption)
+                            .foregroundColor(.tinta.opacity(0.6))
+                            .padding(.top, 8)
+                        TextField("Ej. angie@correo.com", text: $email)
+                            .keyboardType(.emailAddress)
+                            .textInputAutocapitalization(.never)
+                            .autocorrectionDisabled()
+                            .padding()
+                            .background(Color.rosa)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+
+                        if !email.isEmpty && !emailValido {
+                            Text("Ingresa un email válido")
+                                .font(.caption)
+                                .foregroundColor(.red)
+                        }
                     }
+
+                    Button("Guardar") {
+                        onSubmit(name, email)
+                        dismiss()
+                    }
+                    .buttonStyle(PillButtonStyle())
+                    .disabled(!puedeGuardar)
+                    .padding(.top, 10)
                 }
+                .padding(24)
             }
-            .navigationTitle(isEditing ? "Editar Usuario" : "Nuevo Usuario")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancelar") {
                         dismiss()
                     }
                 }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Guardar") {
-                        onSubmit(name, email)
-                        dismiss()
-                    }
-                    .disabled(!puedeGuardar)
-                }
             }
         }
+        .tint(.tinta)
     }
 }
 
